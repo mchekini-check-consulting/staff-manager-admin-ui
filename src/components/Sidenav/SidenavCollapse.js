@@ -23,7 +23,7 @@ import ListItemText from "@mui/material/ListItemText";
 import Icon from "@mui/material/Icon";
 
 // Material Dashboard 2 React components
-import MDBox from "components/MDBox";
+import MDBox from "components/MD/MDBox";
 
 // Custom styles for the SidenavCollapse
 import {
@@ -31,7 +31,7 @@ import {
   collapseIconBox,
   collapseIcon,
   collapseText,
-} from "examples/Sidenav/styles/sidenavCollapse";
+} from "components/Sidenav/styles/sidenavCollapse";
 
 // Material Dashboard 2 React context
 import { useMaterialUIController } from "context";

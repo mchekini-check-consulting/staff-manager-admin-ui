@@ -1,7 +1,7 @@
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 
-function Facture() {
+function FichePaie() {
   return (
     <ContentLayout>
       <ContentNavbar />
@@ -10,4 +10,4 @@ function Facture() {
   );
 }
 
-export default Facture;
+export default FichePaie;

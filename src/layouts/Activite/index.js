@@ -1,5 +1,5 @@
-import ContentLayout from "examples/ContentLayout";
-import ContentNavbar from "examples/ContentNavbar";
+import ContentLayout from "components/ContentLayout";
+import ContentNavbar from "components/ContentNavbar";
 
 function Activite() {
   return (

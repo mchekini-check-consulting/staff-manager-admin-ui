@@ -1,17 +1,12 @@
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
-import { useMaterialUIController } from "context";
 
 import CssBaseline from "@mui/material/CssBaseline";
-import Sidenav from "examples/Sidenav";
+import Sidenav from "components/Sidenav";
 import theme from "assets/theme";
-import themeDark from "assets/theme-dark";
 import routes from "routes";
 
 export default function App() {
-  const [controller] = useMaterialUIController();
-  const { darkMode } = controller;
-
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
       if (route.collapse) {
@@ -26,7 +21,7 @@ export default function App() {
     });
 
   return (
-    <ThemeProvider theme={darkMode ? themeDark : theme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Sidenav brandName="Staff Manager Admin" routes={routes} />
       <Routes>

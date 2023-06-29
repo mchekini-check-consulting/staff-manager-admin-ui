@@ -1,7 +1,7 @@
 import { Link } from "@mui/material";
-import MDBox from "components/MDBox";
-import ContentLayout from "examples/ContentLayout";
-import ContentNavbar from "examples/ContentNavbar";
+import MDBox from "components/MD/MDBox";
+import ContentLayout from "components/ContentLayout";
+import ContentNavbar from "components/ContentNavbar";
 
 function Documentation() {
   return (

@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import PropTypes from "prop-types";
-import MDBox from "components/MDBox";
+import MDBox from "components/MD/MDBox";
 
 import { useMaterialUIController, setLayout } from "context";
 

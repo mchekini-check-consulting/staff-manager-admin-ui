@@ -1,7 +1,7 @@
 import Activite from "layouts/Activite";
+import FichePaie from "layouts/FichePaie";
 import Collaborateur from "layouts/Collaborateur";
 import Facture from "layouts/Facture";
-import FichesPaie from "layouts/FichesPaie";
 import Justificatif from "layouts/Justificatif";
 import Documentation from "layouts/documentation";
 
@@ -18,18 +18,18 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Fiches De Paie",
-    key: "fiches_paie",
+    name: "Fiche De Paie",
+    key: "fiche_paie",
     icon: <Icon fontSize="small">euro</Icon>,
-    route: "/fiches_paie",
-    component: <FichesPaie />,
+    route: "/fiche_paie",
+    component: <FichePaie />,
   },
   {
     type: "collapse",
     name: "Justificatif",
     key: "justificatif",
     icon: <Icon fontSize="small">badge</Icon>,
-    route: "/Justificatif",
+    route: "/justificatif",
     component: <Justificatif />,
   },
   {

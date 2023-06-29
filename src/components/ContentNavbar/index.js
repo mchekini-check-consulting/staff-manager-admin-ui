@@ -5,9 +5,9 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import IconButton from "@mui/material/IconButton";
 import Icon from "@mui/material/Icon";
-import MDBox from "components/MDBox";
-import MDInput from "components/MDInput";
-import Breadcrumbs from "examples/Breadcrumbs";
+import MDBox from "components/MD/MDBox";
+import MDInput from "components/MD/MDInput";
+import Breadcrumbs from "components/Breadcrumbs";
 
 import {
   navbar,
@@ -15,7 +15,7 @@ import {
   navbarRow,
   navbarIconButton,
   navbarMobileMenu,
-} from "examples/Navbars/DashboardNavbar/styles";
+} from "components/Navbars/DashboardNavbar/styles";
 
 import {
   useMaterialUIController,
