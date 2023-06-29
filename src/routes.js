@@ -10,7 +10,7 @@ import Icon from "@mui/material/Icon";
 const routes = [
   {
     type: "collapse",
-    name: "Activité",
+    name: "Validation CRA",
     key: "activite",
     icon: <Icon fontSize="small">bubble_chart</Icon>,
     route: "/activite",
@@ -26,7 +26,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Justificatif",
+    name: "Justificatifs",
     key: "justificatif",
     icon: <Icon fontSize="small">badge</Icon>,
     route: "/justificatif",
@@ -34,7 +34,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Facture",
+    name: "Gestion des Factures",
     key: "facture",
     icon: <Icon fontSize="small">receipt</Icon>,
     route: "/facture",
@@ -42,7 +42,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Collaborateur",
+    name: "Collaborateurs et Missions",
     key: "collaborateur",
     icon: <Icon fontSize="small">groups</Icon>,
     route: "/collaborateur",
