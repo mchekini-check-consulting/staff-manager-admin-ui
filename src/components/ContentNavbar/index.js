@@ -23,6 +23,7 @@ import {
   setMiniSidenav,
   setOpenConfigurator,
 } from "context";
+import { useKeycloak } from "@react-keycloak/web";
 
 function ContentNavbar({ absolute, light, isMini }) {
   const [navbarType, setNavbarType] = useState();
@@ -30,6 +31,8 @@ function ContentNavbar({ absolute, light, isMini }) {
   const { miniSidenav, transparentNavbar, fixedNavbar, openConfigurator, darkMode } = controller;
   const [openMenu, setOpenMenu] = useState(false);
   const route = useLocation().pathname.split("/").slice(1);
+
+  const { keycloak } = useKeycloak();
 
   useEffect(() => {
     // Setting the navbar type
@@ -61,6 +64,7 @@ function ContentNavbar({ absolute, light, isMini }) {
   const handleConfiguratorOpen = () => setOpenConfigurator(dispatch, !openConfigurator);
   const handleOpenMenu = (event) => setOpenMenu(event.currentTarget);
   const handleCloseMenu = () => setOpenMenu(false);
+  const handleLogout = () => keycloak.logout();
 
   // Styles for the navbar icons
   const iconsStyle = ({ palette: { dark, white, text }, functions: { rgba } }) => ({
@@ -112,21 +116,21 @@ function ContentNavbar({ absolute, light, isMini }) {
                 disableRipple
                 color="inherit"
                 sx={navbarIconButton}
-                onClick={handleConfiguratorOpen}
-              >
-                <Icon sx={iconsStyle}>settings</Icon>
-              </IconButton>
-              <IconButton
-                size="small"
-                disableRipple
-                color="inherit"
-                sx={navbarIconButton}
                 aria-controls="notification-menu"
                 aria-haspopup="true"
                 variant="contained"
                 onClick={handleOpenMenu}
               >
                 <Icon sx={iconsStyle}>notifications</Icon>
+              </IconButton>
+              <IconButton
+                size="small"
+                disableRipple
+                color="inherit"
+                sx={navbarIconButton}
+                onClick={handleLogout}
+              >
+                <Icon sx={iconsStyle}>logout</Icon>
               </IconButton>
             </MDBox>
           </MDBox>
