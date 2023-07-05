@@ -1,8 +1,11 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
+import { ReactKeycloakProvider } from "@react-keycloak/web";
 
 import App from "App";
+
+import keycloak from "./keycloak";
 
 import { MaterialUIControllerProvider } from "context";
 
@@ -11,8 +14,10 @@ const root = createRoot(container);
 
 root.render(
   <BrowserRouter>
-    <MaterialUIControllerProvider>
-      <App />
-    </MaterialUIControllerProvider>
+    <ReactKeycloakProvider authClient={keycloak}>
+      <MaterialUIControllerProvider>
+        <App />
+      </MaterialUIControllerProvider>
+    </ReactKeycloakProvider>
   </BrowserRouter>
 );
