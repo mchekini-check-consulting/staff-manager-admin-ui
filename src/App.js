@@ -53,7 +53,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Sidenav brandName={`Staff Manager Admin ${data.version}`} routes={routes} />
+      <Sidenav brandName={`Staff Manager Admin ${data?.version ?? ""}`} routes={routes} />
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/activite" />} />
