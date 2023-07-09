@@ -3,21 +3,25 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ReactKeycloakProvider } from "@react-keycloak/web";
 
-import App from "App";
-
-import keycloak from "./keycloak";
-
 import { MaterialUIControllerProvider } from "context";
+import { Provider } from "react-redux";
+import { store } from "./config/store";
+
+import keycloak from "./config/keycloak";
+
+import App from "App";
 
 const container = document.getElementById("app");
 const root = createRoot(container);
 
 root.render(
-  <BrowserRouter>
-    <ReactKeycloakProvider authClient={keycloak}>
-      <MaterialUIControllerProvider>
-        <App />
-      </MaterialUIControllerProvider>
-    </ReactKeycloakProvider>
-  </BrowserRouter>
+  <Provider store={store}>
+    <BrowserRouter>
+      <ReactKeycloakProvider authClient={keycloak}>
+        <MaterialUIControllerProvider>
+          <App />
+        </MaterialUIControllerProvider>
+      </ReactKeycloakProvider>
+    </BrowserRouter>
+  </Provider>
 );

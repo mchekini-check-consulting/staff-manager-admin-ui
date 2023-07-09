@@ -1,20 +1,34 @@
 import { useEffect } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
+import { useKeycloak } from "@react-keycloak/web";
+import { Box, Typography } from "@mui/material";
+import { useFetchVersionQuery } from "services/general.api";
 
 import CssBaseline from "@mui/material/CssBaseline";
 import Sidenav from "components/Sidenav";
 import theme from "assets/theme";
-import routes from "routes";
+import routes from "./config/routes";
 
-import { useKeycloak } from "@react-keycloak/web";
 import Loader from "components/Loader";
-import { Box, Typography } from "@mui/material";
 
 export default function App() {
   const { keycloak, initialized } = useKeycloak();
 
-  if (!initialized) {
+  const { data, isLoading } = useFetchVersionQuery();
+
+  useEffect(() => {
+    if (keycloak.authenticated) {
+      localStorage.setItem("accessToken", keycloak.token);
+      localStorage.setItem("refreshToken", keycloak.refreshToken);
+    }
+
+    if (!keycloak.authenticated && initialized) {
+      keycloak.login();
+    }
+  }, [keycloak]);
+
+  if (!initialized || isLoading) {
     return (
       <Box display={"flex"} flexDirection={"column"} alignItems={"center"} rowGap={4} marginTop={4}>
         <Typography variant="h6">En cours de chargement...</Typography>
@@ -22,12 +36,6 @@ export default function App() {
       </Box>
     );
   }
-
-  useEffect(() => {
-    if (!keycloak.authenticated) {
-      keycloak.login();
-    }
-  }, [keycloak]);
 
   const getRoutes = (allRoutes) =>
     allRoutes.map((route) => {
@@ -45,7 +53,7 @@ export default function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Sidenav brandName="Staff Manager Admin" routes={routes} />
+      <Sidenav brandName={`Staff Manager Admin ${data.version}`} routes={routes} />
       <Routes>
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/activite" />} />
