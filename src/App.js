@@ -26,7 +26,7 @@ export default function App() {
     if (!keycloak.authenticated && initialized) {
       keycloak.login();
     }
-  }, [keycloak]);
+  }, [keycloak, initialized]);
 
   if (!initialized || isLoading) {
     return (
