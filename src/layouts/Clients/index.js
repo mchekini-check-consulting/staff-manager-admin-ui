@@ -1,11 +1,15 @@
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
+import NewClient from "./NewClient";
+import { Stack } from "@mui/material";
 
 function Clients() {
   return (
     <ContentLayout>
       <ContentNavbar />
-      <div>En cours de dev</div>
+      <Stack alignItems={"flex-end"}>
+        <NewClient />
+      </Stack>
     </ContentLayout>
   );
 }
