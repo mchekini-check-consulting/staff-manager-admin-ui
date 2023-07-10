@@ -1,6 +1,6 @@
 node("ci-node") {
     stage("checkout") {
-        checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mchekini-check-consulting/staff-manager-admin-ui']])
+        checkout scmGit(branches: [[name: '*/develop']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/mchekini-check-consulting/staff-manager-admin-ui']])
     }
 
     stage("quality analyses") {
