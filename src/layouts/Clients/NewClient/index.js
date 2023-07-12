@@ -14,11 +14,13 @@ import {
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { resetForm, togglePopup, updateForm } from "services/clients/client.slice";
+import { useCreateClientMutation } from "services/clients/client.api.slice";
 
 const NewClient = () => {
   const dispatch = useDispatch();
   const openPopup = useSelector((s) => s.clients.openPopup);
   const formData = useSelector((s) => s.clients.newClientForm);
+  const [createClient] = useCreateClientMutation();
 
   const handleOpen = (e) => {
     dispatch(togglePopup());
@@ -38,7 +40,9 @@ const NewClient = () => {
     dispatch(updateForm({ name, value }));
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = () => {
+    createClient(formData);
+  };
 
   return (
     <>

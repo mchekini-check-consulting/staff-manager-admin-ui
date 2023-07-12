@@ -1,9 +1,14 @@
 import { DataGrid } from "@mui/x-data-grid";
 import { fakerFR as faker } from "@faker-js/faker";
 import { useEffect, useState } from "react";
+// import { useGetAllClientsQuery, useGetClientQuery } from "services/clients/client.api.slice";
 
 const ClientList = () => {
   const [data, setData] = useState([]);
+  // const { data: clients, error, isLoading, isError } = useGetAllClientsQuery();
+  // console.log("clients", clients);
+  // const { data: client } = useGetClientQuery("1234");
+  // console.log("client", client);
 
   useEffect(() => {
     const rows = [];
