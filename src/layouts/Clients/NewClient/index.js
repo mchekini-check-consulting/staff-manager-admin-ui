@@ -1,62 +1,64 @@
+import CancelIcon from "@mui/icons-material/Cancel";
+import RestartAltIcon from "@mui/icons-material/RestartAlt";
+import SendIcon from "@mui/icons-material/Send";
 import {
+  Box,
   Button,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Stack,
   TextField,
-  Box,
 } from "@mui/material";
-import { useEffect, useState } from "react";
-import SendIcon from "@mui/icons-material/Send";
-import CancelIcon from "@mui/icons-material/Cancel";
+import { useDispatch, useSelector } from "react-redux";
+import { resetForm, togglePopup, updateForm } from "services/clients/client.slice";
 
 const NewClient = () => {
-  const [newClientModal, setNewClientModal] = useState(false);
+  const dispatch = useDispatch();
+  const openPopup = useSelector((s) => s.clients.openPopup);
+  const formData = useSelector((s) => s.clients.newClientForm);
 
   const handleOpen = (e) => {
-    setNewClientModal(true);
+    dispatch(togglePopup());
   };
+
   const handleClose = () => {
-    setNewClientModal(false);
+    dispatch(resetForm());
+    dispatch(togglePopup());
   };
 
-  useEffect(() => {
-    console.log("formData", formData);
-  });
-
-  const [formData, setFormData] = useState({
-    email: "",
-    nom: "",
-    adresse: "",
-    telephone: "",
-    tva: "",
-  });
+  const handleReset = () => {
+    dispatch(resetForm());
+  };
 
   const handleFormChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    dispatch(updateForm({ name, value }));
   };
+
+  const handleSubmit = () => {};
 
   return (
     <>
       <Button onClick={handleOpen} variant="contained" color="warning" sx={{ color: "#333" }}>
         Nouveau Client ➕
       </Button>
-      <Dialog open={newClientModal} onClose={handleClose} fullWidth maxWidth="md">
+      <Dialog open={openPopup} onClose={handleClose} fullWidth maxWidth="md">
         <Box p={2}>
           <DialogTitle>Créer Un Nouveau Client</DialogTitle>
           <DialogContent>
             <DialogContentText pb={2}>
-              Notez que les champs marqué par <code style={{ color: "red" }}>*</code> sont
-              obligatoires.
+              Notez que les champs marqué par <code style={{ color: "red" }}>astérisque *</code>{" "}
+              sont obligatoires.
             </DialogContentText>
             <form>
               <TextField
-                value={formData.email}
+                value={formData.customerEmail}
                 onChange={(e) => handleFormChange(e)}
                 autoFocus
-                name="email"
+                name="customerEmail"
                 label="Email"
                 type="email"
                 margin="dense"
@@ -65,9 +67,9 @@ const NewClient = () => {
                 variant="outlined"
               />
               <TextField
-                value={formData.nom}
+                value={formData.customerName}
                 onChange={(e) => handleFormChange(e)}
-                name="nom"
+                name="customerName"
                 label="Nom"
                 margin="dense"
                 type="text"
@@ -76,9 +78,9 @@ const NewClient = () => {
                 variant="outlined"
               />
               <TextField
-                value={formData.adresse}
+                value={formData.customerAddress}
                 onChange={(e) => handleFormChange(e)}
-                name="adresse"
+                name="customerAddress"
                 required
                 label="Adresse"
                 margin="dense"
@@ -87,35 +89,42 @@ const NewClient = () => {
                 variant="outlined"
               />
               <TextField
-                value={formData.telephone}
+                value={formData.customerPhone}
                 required
                 onChange={(e) => handleFormChange(e)}
-                name="telephone"
+                name="customerPhone"
                 label="N° Telephone"
                 margin="dense"
                 type="tel"
                 fullWidth
               />
               <TextField
-                value={formData.tva}
+                value={formData.customerTvaNumber}
                 onChange={(e) => handleFormChange(e)}
-                name="tva"
+                name="customerTvaNumber"
                 label="N° TVA"
                 margin="dense"
                 required
-                type="number"
+                // type="number"
                 fullWidth
                 variant="outlined"
               />
             </form>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleClose} endIcon={<CancelIcon />} color="error">
-              Annuler
-            </Button>
-            <Button onClick={handleClose} endIcon={<SendIcon />}>
-              Envoyer
-            </Button>
+            <Stack width="100%" justifyContent={"space-between"} direction={"row"}>
+              <Button onClick={handleReset} endIcon={<RestartAltIcon />} color="error">
+                Réinitialiser
+              </Button>
+              <Stack direction={"row"}>
+                <Button onClick={handleClose} endIcon={<CancelIcon />} color="error">
+                  Annuler
+                </Button>
+                <Button onClick={handleSubmit} endIcon={<SendIcon />}>
+                  Envoyer
+                </Button>
+              </Stack>
+            </Stack>
           </DialogActions>
         </Box>
       </Dialog>

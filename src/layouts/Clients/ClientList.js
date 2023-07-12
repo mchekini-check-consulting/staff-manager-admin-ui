@@ -13,7 +13,12 @@ const ClientList = () => {
         id: i,
         email: faker.internet.email(),
         nom: faker.person.fullName(),
-        adresse: faker.location.city() + faker.location.street() + faker.location.buildingNumber(),
+        adresse:
+          faker.location.city() +
+          ", " +
+          faker.location.street() +
+          ", " +
+          faker.location.buildingNumber(),
         telephone: faker.phone.number(),
         tva: faker.number.int({ min: 5, max: 20 }),
       };
@@ -23,10 +28,6 @@ const ClientList = () => {
 
     setData(rows);
   }, []);
-
-  useEffect(() => {
-    console.log("data", data);
-  });
 
   const columns = [
     { field: "id", headerName: "Id", flex: 0.5 },
@@ -39,7 +40,16 @@ const ClientList = () => {
 
   return (
     <div>
-      <DataGrid rows={data} columns={columns} />
+      <DataGrid
+        rows={data}
+        columns={columns}
+        initialState={{
+          pagination: {
+            paginationModel: { pageSize: 6 },
+          },
+        }}
+        pageSizeOptions={[6, 15, 30, 100]}
+      />
     </div>
   );
 };
