@@ -7,15 +7,15 @@ export const clientsApi = createApi({
   tagTypes: ["Clients"],
   endpoints: (builder) => ({
     getAllClients: builder.query({
-      query: () => "client",
+      query: () => "customer",
       providesTags: ["Clients"],
     }),
     getClient: builder.query({
-      query: (clientId) => `client/${clientId}`,
+      query: (clientId) => `customer/${clientId}`,
     }),
     createClient: builder.mutation({
       query: (body) => ({
-        url: "client",
+        url: "customer",
         method: "POST",
         body,
       }),
@@ -23,7 +23,7 @@ export const clientsApi = createApi({
     }),
     updateClient: builder.mutation({
       query: ({ clientId, ...client }) => ({
-        url: `client/${clientId}`,
+        url: `customer/${clientId}`,
         method: "PUT",
         body: client,
       }),
@@ -31,7 +31,7 @@ export const clientsApi = createApi({
     }),
     deleteClient: builder.mutation({
       query: (clientId) => ({
-        url: `client/${clientId}`,
+        url: `customer/${clientId}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Clients"],

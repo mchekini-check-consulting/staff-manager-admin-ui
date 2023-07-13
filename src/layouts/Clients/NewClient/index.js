@@ -2,6 +2,7 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SendIcon from "@mui/icons-material/Send";
 import {
+  Alert,
   Box,
   Button,
   Dialog,
@@ -20,7 +21,7 @@ const NewClient = () => {
   const dispatch = useDispatch();
   const openPopup = useSelector((s) => s.clients.openPopup);
   const formData = useSelector((s) => s.clients.newClientForm);
-  const [createClient] = useCreateClientMutation();
+  const [createClient, { error, isLoading, isError }] = useCreateClientMutation();
 
   const handleOpen = (e) => {
     dispatch(togglePopup());
@@ -69,6 +70,7 @@ const NewClient = () => {
                 required
                 fullWidth
                 variant="outlined"
+                disabled={isLoading}
               />
               <TextField
                 value={formData.customerName}
@@ -79,6 +81,7 @@ const NewClient = () => {
                 type="text"
                 required
                 fullWidth
+                disabled={isLoading}
                 variant="outlined"
               />
               <TextField
@@ -89,6 +92,7 @@ const NewClient = () => {
                 label="Adresse"
                 margin="dense"
                 type="Nom"
+                disabled={isLoading}
                 fullWidth
                 variant="outlined"
               />
@@ -98,6 +102,7 @@ const NewClient = () => {
                 onChange={(e) => handleFormChange(e)}
                 name="customerPhone"
                 label="N° Telephone"
+                disabled={isLoading}
                 margin="dense"
                 type="tel"
                 fullWidth
@@ -108,23 +113,47 @@ const NewClient = () => {
                 name="customerTvaNumber"
                 label="N° TVA"
                 margin="dense"
+                disabled={isLoading}
                 required
-                // type="number"
                 fullWidth
                 variant="outlined"
               />
             </form>
+            {isError && (
+              <Alert severity="error" py={2}>
+                {error?.data?.data?.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <ul>
+                        <li> - {item.errorMessage}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
+                {error?.data?.message}
+              </Alert>
+            )}
           </DialogContent>
           <DialogActions>
             <Stack width="100%" justifyContent={"space-between"} direction={"row"}>
-              <Button onClick={handleReset} endIcon={<RestartAltIcon />} color="error">
+              <Button
+                onClick={handleReset}
+                endIcon={<RestartAltIcon />}
+                disabled={isLoading}
+                color="error"
+              >
                 Réinitialiser
               </Button>
               <Stack direction={"row"}>
-                <Button onClick={handleClose} endIcon={<CancelIcon />} color="error">
+                <Button
+                  onClick={handleClose}
+                  disabled={isLoading}
+                  endIcon={<CancelIcon />}
+                  color="error"
+                >
                   Annuler
                 </Button>
-                <Button onClick={handleSubmit} endIcon={<SendIcon />}>
+                <Button onClick={handleSubmit} disabled={isLoading} endIcon={<SendIcon />}>
                   Envoyer
                 </Button>
               </Stack>
