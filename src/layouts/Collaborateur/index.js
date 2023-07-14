@@ -2,7 +2,6 @@ import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
