@@ -2,6 +2,7 @@ import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -36,17 +37,9 @@ const rows = [
 
 const collaborateurColumns = [
   { field: "firstName", headerName: "Prénom", flex: 1 },
-  {
-    field: "lastName",
-    headerName: "Nom",
-    flex: 1,
-  },
+  { field: "lastName", headerName: "Nom", flex: 1 },
   { field: "email", headerName: "Email", flex: 1 },
-  {
-    field: "phone",
-    headerName: "Téléphone",
-    flex: 1,
-  },
+  { field: "phone", headerName: "Téléphone", flex: 1 },
   { field: "address", headerName: "Adresse", flex: 1 },
 ];
 
@@ -84,6 +77,7 @@ function Collaborateur() {
     phone: "",
     address: "",
   });
+
   const [collaborateurs, setCollaborateurs] = useState(rows);
 
   const handleOpen = () => setOpen(true);
