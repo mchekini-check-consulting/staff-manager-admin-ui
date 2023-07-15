@@ -6,7 +6,7 @@ export const generalApi = createApi({
   reducerPath: "general",
   endpoints: (builder) => ({
     fetchVersion: builder.query({
-      query: () => "/v1/app/details",
+      query: () => "/app/details",
     }),
   }),
 });

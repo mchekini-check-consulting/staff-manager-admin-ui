@@ -60,6 +60,15 @@ const NewClient = () => {
     dispatch(toggleSnackbar());
   };
 
+  function isFormValid(formData) {
+    for (const key in formData) {
+      if (formData.hasOwnProperty(key) && formData[key] === "") {
+        return false;
+      }
+    }
+    return true;
+  }
+
   return (
     <>
       <Button onClick={handleOpen} variant="contained" color="warning" sx={{ color: "#333" }}>
@@ -151,7 +160,11 @@ const NewClient = () => {
             </form>
           </DialogContent>
           <DialogActions>
-            <Stack width="100%" justifyContent={"space-between"} direction={"row"}>
+            <Stack
+              width="100%"
+              justifyContent={"space-between"}
+              direction={{ xs: "column", sm: "row" }}
+            >
               <Button
                 onClick={handleReset}
                 endIcon={<RestartAltIcon />}
@@ -160,7 +173,7 @@ const NewClient = () => {
               >
                 Réinitialiser
               </Button>
-              <Stack direction={"row"}>
+              <Stack direction={{ xs: "column", sm: "row" }}>
                 <Button
                   onClick={handleClose}
                   disabled={isLoading}
@@ -169,8 +182,12 @@ const NewClient = () => {
                 >
                   Annuler
                 </Button>
-                <Button onClick={handleSubmit} disabled={isLoading} endIcon={<SendIcon />}>
-                  Envoyer
+                <Button
+                  onClick={handleSubmit}
+                  disabled={isLoading || !isFormValid(formData)}
+                  endIcon={<SendIcon />}
+                >
+                  Créer le client
                 </Button>
               </Stack>
             </Stack>
