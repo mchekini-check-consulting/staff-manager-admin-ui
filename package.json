@@ -19,6 +19,7 @@
     "@mui/x-data-grid": "^6.10.0",
     "@react-keycloak/web": "^3.4.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "axios": "^1.4.0",
     "chart.js": "4.3.0",
     "chroma-js": "2.4.2",
     "http-proxy-middleware": "^2.0.6",

@@ -5,8 +5,11 @@ module.exports = function (app) {
   app.use(
     "/api",
     createProxyMiddleware({
-      target: "http://localhost:8080",
+      target: "http://check-consulting.net:8080",
       changeOrigin: true,
+        onProxyReq(proxyReq, req, res) {
+            console.log('onProxyReq was fired', proxyReq.path);
+        }
     })
   );
 };
