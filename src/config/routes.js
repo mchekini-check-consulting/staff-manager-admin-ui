@@ -1,6 +1,7 @@
 import Activite from "layouts/Activite";
 import FichePaie from "layouts/FichePaie";
 import Collaborateur from "layouts/Collaborateur";
+import Missions from "layouts/missions";
 import Facture from "layouts/Facture";
 import Justificatif from "layouts/Justificatif";
 import Documentation from "layouts/documentation";
@@ -43,11 +44,19 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Collaborateurs et Missions",
+    name: "Collaborateurs",
     key: "collaborateur",
     icon: <Icon fontSize="small">groups</Icon>,
     route: "/collaborateur",
     component: <Collaborateur />,
+  },
+  {
+    type: "collapse",
+    name: "Missions",
+    key: "missions",
+    icon: <Icon fontSize="small">engineering</Icon>,
+    route: "/missions",
+    component: <Missions />,
   },
   {
     type: "collapse",
