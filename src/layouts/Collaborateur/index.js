@@ -76,7 +76,6 @@ function Collaborateur() {
     phone: "",
     address: "",
   });
-
   const [collaborateurs, setCollaborateurs] = useState(rows);
 
   const handleOpen = () => setOpen(true);
