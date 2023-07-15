@@ -1,1 +1,1 @@
-export const API_URL = `${window.location.origin}/api/v1`;
+export const API_URL = `${window.location.origin}/api/v1/`;
