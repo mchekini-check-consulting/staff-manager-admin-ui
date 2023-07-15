@@ -8,6 +8,9 @@ module.exports = function (app) {
     createProxyMiddleware({
       target: process.env.PUBLIC_API_URL,
       changeOrigin: true,
+        onProxyReq(proxyReq, req, res) {
+            console.log('onProxyReq was fired', proxyReq.path);
+        }
     })
   );
 };
