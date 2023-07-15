@@ -105,6 +105,18 @@ function Collaborateur() {
       };
       // Ajouter le nouveau collaborateur à la liste des collaborateurs
       setCollaborateurs([...collaborateurs, newCollaborateur]);
+      // Afficher la notification de succès
+      toast.success("Le collaborateur a été créé avec succès", {
+        autoClose: 2000,
+      });
+      // Réinitialiser les valeurs du formulaire
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+        address: "",
+      });
       // Fermer la popup
       setOpen(false);
     }
@@ -184,6 +196,7 @@ function Collaborateur() {
               onChange={handleChange}
               required
               variant="outlined"
+              disabled={isLoading}
               error={Boolean(error?.data?.firstName)}
               helperText={error?.data?.firstName}
             />
@@ -194,6 +207,7 @@ function Collaborateur() {
               onChange={handleChange}
               required
               variant="outlined"
+              disabled={isLoading}
               error={Boolean(error?.data?.lastName)}
               helperText={error?.data?.lastName}
             />
@@ -204,6 +218,7 @@ function Collaborateur() {
               onChange={handleChange}
               required
               variant="outlined"
+              disabled={isLoading}
               error={Boolean(error?.data?.email)}
               helperText={error?.data?.email}
             />
@@ -214,6 +229,7 @@ function Collaborateur() {
               onChange={handleChange}
               required
               variant="outlined"
+              disabled={isLoading}
               error={Boolean(error?.data?.phone)}
               helperText={error?.data?.phone}
             />
@@ -224,6 +240,7 @@ function Collaborateur() {
               onChange={handleChange}
               required
               variant="outlined"
+              disabled={isLoading}
               error={Boolean(error?.data?.address)}
               helperText={error?.data?.address}
             />
@@ -232,6 +249,7 @@ function Collaborateur() {
               variant="contained"
               style={buttonStyle2}
               disabled={
+                isLoading ||
                 !(
                   formData.firstName &&
                   formData.lastName &&
