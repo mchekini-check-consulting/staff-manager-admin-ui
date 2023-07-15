@@ -8,8 +8,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import { useCreateCollaboratorMutation } from "../../services/collaborator/collaborator.api.slice";
+import "react-toastify/dist/ReactToastify.css";
 
 function createData(id, firstName, lastName, email, phone, address) {
   return { id, firstName, lastName, email, phone, address };
