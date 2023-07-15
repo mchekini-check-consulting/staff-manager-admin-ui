@@ -12,16 +12,19 @@ import {
   DialogTitle,
   Stack,
   TextField,
+  Snackbar,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { resetForm, togglePopup, updateForm } from "services/clients/client.slice";
+import { resetForm, togglePopup, updateForm, toggleSnackbar } from "services/clients/client.slice";
 import { useCreateClientMutation } from "services/clients/client.api.slice";
+import { useEffect } from "react";
 
 const NewClient = () => {
   const dispatch = useDispatch();
   const openPopup = useSelector((s) => s.clients.openPopup);
+  const openSnackbar = useSelector((s) => s.clients.confirmClientCreation);
   const formData = useSelector((s) => s.clients.newClientForm);
-  const [createClient, { error, isLoading, isError }] = useCreateClientMutation();
+  const [createClient, { error, isLoading, isSuccess }] = useCreateClientMutation();
 
   const handleOpen = (e) => {
     dispatch(togglePopup());
@@ -45,11 +48,28 @@ const NewClient = () => {
     createClient(formData);
   };
 
+  useEffect(() => {
+    if (isSuccess) {
+      dispatch(togglePopup());
+      dispatch(resetForm());
+      handleSnackbar();
+    }
+  }, [isSuccess]);
+
+  const handleSnackbar = () => {
+    dispatch(toggleSnackbar());
+  };
+
   return (
     <>
       <Button onClick={handleOpen} variant="contained" color="warning" sx={{ color: "#333" }}>
         Nouveau Client ➕
       </Button>
+      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbar}>
+        <Alert onClose={handleSnackbar} severity="success" sx={{ width: "100%" }}>
+          Client crée avec success
+        </Alert>
+      </Snackbar>
       <Dialog open={openPopup} onClose={handleClose} fullWidth maxWidth="md">
         <Box p={2}>
           <DialogTitle>Créer Un Nouveau Client</DialogTitle>
@@ -71,6 +91,8 @@ const NewClient = () => {
                 fullWidth
                 variant="outlined"
                 disabled={isLoading}
+                helperText={error?.data?.customerEmail}
+                error={Boolean(error?.data?.customerEmail)}
               />
               <TextField
                 value={formData.customerName}
@@ -83,11 +105,15 @@ const NewClient = () => {
                 fullWidth
                 disabled={isLoading}
                 variant="outlined"
+                helperText={error?.data?.customerName}
+                error={Boolean(error?.data?.customerName)}
               />
               <TextField
                 value={formData.customerAddress}
                 onChange={(e) => handleFormChange(e)}
                 name="customerAddress"
+                helperText={error?.data?.customerAddress}
+                error={Boolean(error?.data?.customerAddress)}
                 required
                 label="Adresse"
                 margin="dense"
@@ -106,6 +132,8 @@ const NewClient = () => {
                 margin="dense"
                 type="tel"
                 fullWidth
+                helperText={error?.data?.customerPhone}
+                error={Boolean(error?.data?.customerPhone)}
               />
               <TextField
                 value={formData.customerTvaNumber}
@@ -117,22 +145,10 @@ const NewClient = () => {
                 required
                 fullWidth
                 variant="outlined"
+                helperText={error?.data?.customerTvaNumber}
+                error={Boolean(error?.data?.customerTvaNumber)}
               />
             </form>
-            {isError && (
-              <Alert severity="error" py={2}>
-                {error?.data?.data?.map((item, index) => {
-                  return (
-                    <div key={index}>
-                      <ul>
-                        <li> - {item.errorMessage}</li>
-                      </ul>
-                    </div>
-                  );
-                })}
-                {error?.data?.message}
-              </Alert>
-            )}
           </DialogContent>
           <DialogActions>
             <Stack width="100%" justifyContent={"space-between"} direction={"row"}>
