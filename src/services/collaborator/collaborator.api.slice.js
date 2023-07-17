@@ -1,10 +1,15 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "config/baseQuery";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const collaboratorApi = createApi({
   reducerPath: "collaboratorApi",
-  baseQuery: baseQuery,
+  baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:3000/api/v1" }), // Remplacez l'URL par celle de votre API
   endpoints: (builder) => ({
+    getAllCollaborators: builder.query({
+      query: () => "collaborator",
+    }),
+    getCollaborator: builder.query({
+      query: (collaboratorId) => `collaborator/${collaboratorId}`,
+    }),
     createCollaborator: builder.mutation({
       query: (body) => ({
         url: "collaborator",
@@ -15,4 +20,8 @@ export const collaboratorApi = createApi({
   }),
 });
 
-export const { useCreateCollaboratorMutation } = collaboratorApi;
+export const {
+  useGetAllCollaboratorsQuery,
+  useGetCollaboratorQuery,
+  useCreateCollaboratorMutation,
+} = collaboratorApi;

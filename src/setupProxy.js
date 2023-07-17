@@ -9,7 +9,7 @@ module.exports = function (app) {
       target: process.env.PUBLIC_API_URL,
       changeOrigin: true,
         onProxyReq(proxyReq, req, res) {
-            console.log('onProxyReq was fired', proxyReq.path);
+            console.log('onProxyReq was fired', process.env.PUBLIC_API_URL, proxyReq.path);
         }
     })
   );
