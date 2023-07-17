@@ -111,8 +111,12 @@ function Collaborateur() {
       });
       // Fermer la popup
       setOpen(false);
+    } else if (error) {
+      toast.error("Erreur lors de la création du collaborateur", {
+        autoClose: 2000,
+      });
     }
-  }, [isSuccess]);
+  }, [isSuccess, error]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
