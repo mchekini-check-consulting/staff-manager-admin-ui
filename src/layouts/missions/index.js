@@ -4,34 +4,36 @@ import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import Typography from "components/MD/MDTypography";
 import AddMission from "./modals/addMission";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const columns = [
-  { field: "name", headerName: "Nom de la mission", width: 150 },
+  { field: "missionName", headerName: "Nom de la mission", width: 150 },
   {
-    field: "startingDateMission",
+    field: "startingDate",
     headerName: "Date de début ",
     width: 150,
   },
   {
-    field: "endingDateMission",
+    field: "endingDate",
     headerName: "Date de fin ",
     width: 150,
   },
   {
-    field: "customer",
+    field: "customerName",
     headerName: "Client",
     width: 100,
   },
   {
-    field: "customerContactFirstname",
+    field: "customerContactFirstName",
     headerName: "Nom du Contact",
     width: 160,
   },
   {
-    field: "customerContactLastname",
+    field: "customerContactLastName",
     headerName: "Prénom du Contact",
     width: 160,
   },
@@ -50,20 +52,10 @@ const columns = [
     headerName: "Affectation",
     width: 160,
   },
-];
-
-const rows = [
   {
-    id: 1,
-    name: "mission name",
-    startingDateMission: "11-11-2011",
-    endingDateMission: "11-11-2011",
-    customer: "AMAZON",
-    customerContactFirstname: "John",
-    customerContactLastname: "Doe",
-    customerContactEmail: "john@gmail.com",
-    customerContactPhone: "0203029382",
-    collaborator: "Jerry ",
+    field: "MissionDescription",
+    headerName: "description",
+    width: 160,
   },
 ];
 
@@ -78,9 +70,31 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export default function Missions() {
   const [openModal, setOpenModal] = useState(false);
+  const [missions, setMission] = useState([]);
 
   const handleOpenAddModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+
+  useEffect(() => {
+    //replace with this when api endpoint is available
+    //http://check-consulting.net:8080/api/v1/mission
+    fetch("./api_mocks/missionsMock.json", {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((result) => setMission(result))
+      .catch((error) => {
+        toast.error(
+          "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
+          {
+            position: toast.POSITION.TOP_RIGHT,
+          }
+        );
+      });
+  });
 
   return (
     <>
@@ -89,7 +103,7 @@ export default function Missions() {
       <ContentLayout>
         <ContentNavbar />
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-          <StyledBadge badgeContent={rows.length} color="secondary">
+          <StyledBadge badgeContent={missions.length} color="secondary">
             <Typography variant="h4" component="h2">
               Missions
             </Typography>
@@ -107,7 +121,7 @@ export default function Missions() {
 
         <Box sx={{ height: "90%", width: "100%", mt: 3 }}>
           <DataGrid
-            rows={rows}
+            rows={missions}
             columns={columns}
             sx={{
               "& .MuiDataGrid-cell:hover": {
@@ -117,6 +131,7 @@ export default function Missions() {
             disableRowSelectionOnClick
           />
         </Box>
+        <ToastContainer />
       </ContentLayout>
     </>
   );
