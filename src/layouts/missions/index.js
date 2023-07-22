@@ -4,66 +4,65 @@ import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import Typography from "components/MD/MDTypography";
 import AddMission from "./modals/addMission";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGetMissionsQuery } from "services/missions/missionSlice";
 
 const columns = [
-  { field: "name", headerName: "Nom de la mission", width: 150 },
+  { field: "missionName", headerName: "Nom de la mission", flex: 0.7 },
   {
-    field: "startingDateMission",
+    field: "startingDate",
     headerName: "Date de début ",
-    width: 150,
+    flex: 0.7,
   },
   {
-    field: "endingDateMission",
+    field: "endingDate",
     headerName: "Date de fin ",
-    width: 150,
+    flex: 0.7,
   },
   {
-    field: "customer",
+    field: "customerName",
     headerName: "Client",
-    width: 100,
+    flex: 0.8,
   },
   {
-    field: "customerContactFirstname",
-    headerName: "Nom du Contact",
-    width: 160,
+    field: "customerContactFirstName",
+    headerName: "prénom du Contact",
+    flex: 1,
   },
   {
-    field: "customerContactLastname",
-    headerName: "Prénom du Contact",
-    width: 160,
+    field: "customerContactLastName",
+    headerName: "nom du Contact",
+    flex: 1,
   },
   {
     field: "customerContactEmail",
     headerName: "Email du contact",
-    width: 160,
+    flex: 1.4,
   },
   {
     field: "customerContactPhone",
     headerName: "Téléphone du contact",
-    width: 160,
+    flex: 0.8,
   },
   {
-    field: "collaborator",
-    headerName: "Affectation",
-    width: 160,
+    field: "collaboratorFirstName",
+    headerName: "prénom collaborateur",
+    flex: 1,
   },
-];
-
-const rows = [
   {
-    id: 1,
-    name: "mission name",
-    startingDateMission: "11-11-2011",
-    endingDateMission: "11-11-2011",
-    customer: "AMAZON",
-    customerContactFirstname: "John",
-    customerContactLastname: "Doe",
-    customerContactEmail: "john@gmail.com",
-    customerContactPhone: "0203029382",
-    collaborator: "Jerry ",
+    field: "collaboratorLastName",
+    headerName: "nom collaborateur",
+    flex: 1,
+  },
+  {
+    field: "missionDescription",
+    headerName: "description",
+    flex: 2,
   },
 ];
 
@@ -78,9 +77,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export default function Missions() {
   const [openModal, setOpenModal] = useState(false);
-
   const handleOpenAddModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
+  const { data, error, isLoading } = useGetMissionsQuery();
 
   return (
     <>
@@ -89,7 +88,7 @@ export default function Missions() {
       <ContentLayout>
         <ContentNavbar />
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-          <StyledBadge badgeContent={rows.length} color="secondary">
+          <StyledBadge badgeContent={data ? data.length : "0"} color="secondary">
             <Typography variant="h4" component="h2">
               Missions
             </Typography>
@@ -106,16 +105,28 @@ export default function Missions() {
         </Box>
 
         <Box sx={{ height: "90%", width: "100%", mt: 3 }}>
-          <DataGrid
-            rows={rows}
-            columns={columns}
-            sx={{
-              "& .MuiDataGrid-cell:hover": {
-                color: "primary.main",
-              },
-            }}
-            disableRowSelectionOnClick
-          />
+          {error ? (
+            toast.error(
+              "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+              }
+            )
+          ) : isLoading ? (
+            <CircularProgress />
+          ) : data ? (
+            <DataGrid
+              rows={data}
+              columns={columns}
+              sx={{
+                "& .MuiDataGrid-cell:hover": {
+                  color: "primary.main",
+                },
+                fontSize: "0.7rem",
+              }}
+              disableRowSelectionOnClick
+            />
+          ) : null}
         </Box>
       </ContentLayout>
     </>

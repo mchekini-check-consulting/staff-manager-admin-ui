@@ -9,7 +9,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Sidenav from "components/Sidenav";
 import theme from "assets/theme";
 import routes from "./config/routes";
-
+import { ToastContainer } from "react-toastify";
 import Loader from "components/Loader";
 
 export default function App() {
@@ -58,6 +58,7 @@ export default function App() {
         {getRoutes(routes)}
         <Route path="*" element={<Navigate to="/activite" />} />
       </Routes>
+      <ToastContainer />
     </ThemeProvider>
   );
 }
