@@ -1,41 +1,30 @@
 [
     {
         "id": 1,
-        "missionName": "staff manager for mahdi",
-        "startingDate": "03-09-2023",
-        "endingDate": "21-12-2023",
-        "customerName": "BNP",
-        "customerContactLastName": "Marchand",
-        "customerContactFirstName": "Marcel",
-        "customerContactEmail": "marchand.marcel@gmail.com",
-        "customerContactPhone": "0654212894",
-        "collaborator": "karim dev",
-        "MissionDescription": "developpement de rien"
+        "missionName": "name of mission",
+        "startingDate": "2023-10-12",
+        "endingDate": "2023-11-12",
+        "customerName": "Mr customer",
+        "customerContactLastName": "customer contact lname",
+        "customerContactFirstName": "customer contact fname",
+        "customerContactEmail": "customer@contact.com",
+        "customerContactPhone": "0770707070",
+        "collaboratorFirstName": "karim",
+        "collaboratorLastName": "sidi said",
+        "missionDescription": "la mission consiste a faire"
     },
     {
         "id": 2,
-        "missionName": "bank app",
-        "startingDate": "31-09-2023",
-        "endingDate": "12-12-2023",
-        "customerName": "Banque postal",
-        "customerContactLastName": "Marchand",
-        "customerContactFirstName": "Marcel",
-        "customerContactEmail": "marchand.marcel@gmail.com",
-        "customerContactPhone": "0654212894",
-        "collaborator": "khaled dev",
-        "MissionDescription": "developpement d'une application mobile pour la banque postal"
-    },
-    {
-        "id": 3,
-        "missionName": "IA app like chatGPT",
-        "startingDate": "05-10-2023",
-        "endingDate": "17-11-2023",
-        "customerName": "Google",
-        "customerContactLastName": "John",
-        "customerContactFirstName": "Doel",
-        "customerContactEmail": "john.do@gmail.com",
-        "customerContactPhone": "0677212894",
-        "collaborator": null,
-        "MissionDescription": null
+        "missionName": "name of mission2",
+        "startingDate": "2023-10-12",
+        "endingDate": "2023-11-12",
+        "customerName": "customer2 name",
+        "customerContactLastName": "custome2 contact lname",
+        "customerContactFirstName": "customer2 contact fname",
+        "customerContactEmail": "customer2@contact.com",
+        "customerContactPhone": "0770707078",
+        "collaboratorFirstName": "collab fname",
+        "collaboratorLastName": "collab lname",
+        "missionDescription": "la mission 2 consiste a faire"
     }
 ]

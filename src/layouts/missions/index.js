@@ -7,55 +7,62 @@ import AddMission from "./modals/addMission";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
-import { toast, ToastContainer } from "react-toastify";
+import CircularProgress from "@mui/material/CircularProgress";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useGetMissionsQuery } from "services/missions/missionSlice";
 
 const columns = [
-  { field: "missionName", headerName: "Nom de la mission", width: 150 },
+  { field: "missionName", headerName: "Nom de la mission", flex: 0.7 },
   {
     field: "startingDate",
     headerName: "Date de début ",
-    width: 150,
+    flex: 0.7,
   },
   {
     field: "endingDate",
     headerName: "Date de fin ",
-    width: 150,
+    flex: 0.7,
   },
   {
     field: "customerName",
     headerName: "Client",
-    width: 100,
+    flex: 0.8,
   },
   {
     field: "customerContactFirstName",
-    headerName: "Nom du Contact",
-    width: 160,
+    headerName: "prénom du Contact",
+    flex: 1,
   },
   {
     field: "customerContactLastName",
-    headerName: "Prénom du Contact",
-    width: 160,
+    headerName: "nom du Contact",
+    flex: 1,
   },
   {
     field: "customerContactEmail",
     headerName: "Email du contact",
-    width: 160,
+    flex: 1.4,
   },
   {
     field: "customerContactPhone",
     headerName: "Téléphone du contact",
-    width: 160,
+    flex: 0.8,
   },
   {
-    field: "collaborator",
-    headerName: "Affectation",
-    width: 160,
+    field: "collaboratorFirstName",
+    headerName: "prénom collaborateur",
+    flex: 1,
   },
   {
-    field: "MissionDescription",
+    field: "collaboratorLastName",
+    headerName: "nom collaborateur",
+    flex: 1,
+  },
+  {
+    field: "missionDescription",
     headerName: "description",
-    width: 160,
+    flex: 2,
   },
 ];
 
@@ -70,31 +77,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export default function Missions() {
   const [openModal, setOpenModal] = useState(false);
-  const [missions, setMission] = useState([]);
-
   const handleOpenAddModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
-
-  useEffect(() => {
-    //replace with this when api endpoint is available
-    //http://check-consulting.net:8080/api/v1/mission
-    fetch("./api_mocks/missionsMock.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => setMission(result))
-      .catch((error) => {
-        toast.error(
-          "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
-          {
-            position: toast.POSITION.TOP_RIGHT,
-          }
-        );
-      });
-  });
+  const { data, error, isLoading } = useGetMissionsQuery();
 
   return (
     <>
@@ -103,7 +88,7 @@ export default function Missions() {
       <ContentLayout>
         <ContentNavbar />
         <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-          <StyledBadge badgeContent={missions.length} color="secondary">
+          <StyledBadge badgeContent={data ? data.length : "0"} color="secondary">
             <Typography variant="h4" component="h2">
               Missions
             </Typography>
@@ -120,18 +105,29 @@ export default function Missions() {
         </Box>
 
         <Box sx={{ height: "90%", width: "100%", mt: 3 }}>
-          <DataGrid
-            rows={missions}
-            columns={columns}
-            sx={{
-              "& .MuiDataGrid-cell:hover": {
-                color: "primary.main",
-              },
-            }}
-            disableRowSelectionOnClick
-          />
+          {error ? (
+            toast.error(
+              "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+              }
+            )
+          ) : isLoading ? (
+            <CircularProgress />
+          ) : data ? (
+            <DataGrid
+              rows={data}
+              columns={columns}
+              sx={{
+                "& .MuiDataGrid-cell:hover": {
+                  color: "primary.main",
+                },
+                fontSize: "0.7rem",
+              }}
+              disableRowSelectionOnClick
+            />
+          ) : null}
         </Box>
-        <ToastContainer />
       </ContentLayout>
     </>
   );
