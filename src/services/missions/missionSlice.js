@@ -9,7 +9,12 @@ export const missionSlice = generalApi.injectEndpoints({
         body,
       }),
     }),
+    getMissions: builder.query({
+      query: () => ({
+        url: "/mission",
+      }),
+    }),
   }),
 });
 
-export const { useCreateMissionMutation } = missionSlice;
+export const { useCreateMissionMutation, useGetMissionsQuery } = missionSlice;

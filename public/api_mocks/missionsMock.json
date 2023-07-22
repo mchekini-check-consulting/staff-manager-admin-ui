@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "missionName": "name of mission",
+        "startingDate": "2023-10-12",
+        "endingDate": "2023-11-12",
+        "customerName": "Mr customer",
+        "customerContactLastName": "customer contact lname",
+        "customerContactFirstName": "customer contact fname",
+        "customerContactEmail": "customer@contact.com",
+        "customerContactPhone": "0770707070",
+        "collaboratorFirstName": "karim",
+        "collaboratorLastName": "sidi said",
+        "missionDescription": "la mission consiste a faire"
+    },
+    {
+        "id": 2,
+        "missionName": "name of mission2",
+        "startingDate": "2023-10-12",
+        "endingDate": "2023-11-12",
+        "customerName": "customer2 name",
+        "customerContactLastName": "custome2 contact lname",
+        "customerContactFirstName": "customer2 contact fname",
+        "customerContactEmail": "customer2@contact.com",
+        "customerContactPhone": "0770707078",
+        "collaboratorFirstName": "collab fname",
+        "collaboratorLastName": "collab lname",
+        "missionDescription": "la mission 2 consiste a faire"
+    }
+]
