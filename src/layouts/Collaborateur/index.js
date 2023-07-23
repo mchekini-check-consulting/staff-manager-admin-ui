@@ -8,31 +8,11 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { toast, ToastContainer } from "react-toastify";
-import { useCreateCollaboratorMutation } from "../../services/collaborator/collaborator.api.slice";
+import {
+  useCreateCollaboratorMutation,
+  useGetAllCollaboratorsQuery,
+} from "../../services/collaborator/collaborator.api.slice";
 import "react-toastify/dist/ReactToastify.css";
-
-function createData(id, firstName, lastName, email, phone, address) {
-  return { id, firstName, lastName, email, phone, address };
-}
-
-const rows = [
-  createData(
-    1,
-    "Collaborateur1",
-    "Collaborateur1",
-    "collaborateur1@mail.com",
-    "0000000000",
-    "Adresse 1"
-  ),
-  createData(
-    2,
-    "Collaborateur2",
-    "Collaborateur2",
-    "collaborateur2@mail.com",
-    "1111111111",
-    "Adresse 2"
-  ),
-];
 
 const collaborateurColumns = [
   { field: "firstName", headerName: "Prénom", flex: 1 },
@@ -76,7 +56,17 @@ function Collaborateur() {
     phone: "",
     address: "",
   });
-  const [collaborateurs, setCollaborateurs] = useState(rows);
+  const [collaborateurs, setCollaborateurs] = useState([]);
+
+  // Utiliser le hook pour récupérer tous les collaborateurs depuis l'API
+  const { data, isLoading: isFetching } = useGetAllCollaboratorsQuery();
+
+  useEffect(() => {
+    // Mettre à jour la liste des collaborateurs lorsque les données sont disponibles
+    if (data) {
+      setCollaborateurs(data);
+    }
+  }, [data]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -158,20 +148,20 @@ function Collaborateur() {
     <ContentLayout>
       <ContentNavbar />
 
+      <Button onClick={handleOpen} variant="contained" style={buttonStyle}>
+        Ajouter Collaborateur
+      </Button>
+
       <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
         <div style={{ flex: 1 }}>
           <DataGrid
-            rows={collaborateurs}
+            rows={collaborateurs} // Utiliser la variable "collaborateurs" ici
             columns={collaborateurColumns}
             pageSize={5}
             autoHeight
             components={{ Toolbar: null }}
           />
         </div>
-
-        <Button onClick={handleOpen} variant="contained" style={buttonStyle}>
-          Ajouter Collaborateur
-        </Button>
       </div>
 
       <Modal
