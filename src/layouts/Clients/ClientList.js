@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useGetAllClientsQuery } from "services/clients/client.api.slice";
 
 const ClientList = () => {
-  const { data: clients, isLoading, isError } = useGetAllClientsQuery();
+  const { data: data, isLoading, isError } = useGetAllClientsQuery();
 
   const columns = [
     { field: "id", headerName: "Id", flex: 0.5 },
@@ -17,7 +17,7 @@ const ClientList = () => {
   ];
 
   if (isLoading) {
-    <CircularProgress />;
+    return <CircularProgress />;
   }
 
   if (isError) {
@@ -29,11 +29,11 @@ const ClientList = () => {
     );
   }
 
-  if (clients) {
+  if (data) {
     return (
       <div>
         <DataGrid
-          rows={clients}
+          rows={data.customers}
           columns={columns}
           initialState={{
             pagination: {
