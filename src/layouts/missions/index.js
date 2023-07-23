@@ -77,32 +77,9 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 
 export default function Missions() {
   const [openModal, setOpenModal] = useState(false);
-  const [missions, setMission] = useState([]);
-
   const handleOpenAddModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const { data, error, isLoading } = useGetMissionsQuery();
-
-  useEffect(() => {
-    //replace with this when api endpoint is available
-    //http://check-consulting.net:8080/api/v1/mission
-    fetch("./api_mocks/missionsMock.json", {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-    })
-      .then((response) => response.json())
-      .then((result) => setMission(result))
-      .catch((error) => {
-        toast.error(
-          "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
-          {
-            position: toast.POSITION.TOP_RIGHT,
-          }
-        );
-      });
-  });
 
   return (
     <>
@@ -151,7 +128,6 @@ export default function Missions() {
             />
           ) : null}
         </Box>
-        <ToastContainer />
       </ContentLayout>
     </>
   );
