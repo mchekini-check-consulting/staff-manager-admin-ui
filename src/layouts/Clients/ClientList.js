@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useGetAllClientsQuery } from "services/clients/client.api.slice";
 
 const ClientList = () => {
-  const { data: clients, isLoading, isError } = useGetAllClientsQuery();
+  const { data: data, isLoading, isError } = useGetAllClientsQuery();
 
   const columns = [
     { field: "id", headerName: "Id", flex: 0.5 },
