@@ -1,57 +1,50 @@
+import { CircularProgress } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { fakerFR as faker } from "@faker-js/faker";
-import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useGetAllClientsQuery } from "services/clients/client.api.slice";
 
 const ClientList = () => {
-  const [data, setData] = useState([]);
-
-  useEffect(() => {
-    const rows = [];
-
-    for (let i = 1; i <= 50; i++) {
-      const row = {
-        id: i,
-        email: faker.internet.email(),
-        nom: faker.person.fullName(),
-        adresse:
-          faker.location.city() +
-          ", " +
-          faker.location.street() +
-          ", " +
-          faker.location.buildingNumber(),
-        telephone: faker.phone.number(),
-        tva: faker.number.int({ min: 5, max: 20 }),
-      };
-
-      rows.push(row);
-    }
-
-    setData(rows);
-  }, []);
+  const { data: clients, isLoading, isError } = useGetAllClientsQuery();
 
   const columns = [
     { field: "id", headerName: "Id", flex: 0.5 },
-    { field: "email", headerName: "Email", flex: 1 },
-    { field: "nom", headerName: "Nom", flex: 1 },
-    { field: "adresse", headerName: "Adresse", flex: 2 },
-    { field: "telephone", headerName: "N° Telephone", flex: 1 },
-    { field: "tva", headerName: "N° TVA", flex: 1 },
+    { field: "customerEmail", headerName: "Email", flex: 1 },
+    { field: "customerName", headerName: "Nom", flex: 1 },
+    { field: "customerAddress", headerName: "Adresse", flex: 2 },
+    { field: "customerPhone", headerName: "N° Telephone", flex: 1 },
+    { field: "customerTvaNumber", headerName: "N° TVA", flex: 1 },
   ];
 
-  return (
-    <div>
-      <DataGrid
-        rows={data}
-        columns={columns}
-        initialState={{
-          pagination: {
-            paginationModel: { pageSize: 6 },
-          },
-        }}
-        pageSizeOptions={[6, 15, 30, 100]}
-      />
-    </div>
-  );
+  if (isLoading) {
+    <CircularProgress />;
+  }
+
+  if (isError) {
+    return toast.error(
+      "Oups, une erreur serveur c'est produite en essayant de récupérer les clients",
+      {
+        position: toast.POSITION.TOP_RIGHT,
+      }
+    );
+  }
+
+  if (clients) {
+    return (
+      <div>
+        <DataGrid
+          rows={clients}
+          columns={columns}
+          initialState={{
+            pagination: {
+              paginationModel: { pageSize: 6 },
+            },
+          }}
+          pageSizeOptions={[6, 15, 30, 100]}
+        />
+      </div>
+    );
+  }
 };
 
 export default ClientList;
