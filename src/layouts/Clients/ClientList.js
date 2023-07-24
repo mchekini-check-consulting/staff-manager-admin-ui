@@ -5,7 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { useGetAllClientsQuery } from "services/clients/client.api.slice";
 
 const ClientList = () => {
-  const { data: clients, isLoading, isError } = useGetAllClientsQuery();
+  const { data: data, isLoading, isError } = useGetAllClientsQuery();
 
   const columns = [
     { field: "id", headerName: "Id", flex: 0.5 },
@@ -17,7 +17,7 @@ const ClientList = () => {
   ];
 
   if (isLoading) {
-    <CircularProgress />;
+    return <CircularProgress />;
   }
 
   if (isError) {
@@ -29,14 +29,44 @@ const ClientList = () => {
     );
   }
 
-  if (clients) {
+  if (data) {
     return (
       <div>
         <DataGrid
-          rows={clients}
+          rows={data.customers}
           columns={columns}
           initialState={{
             pagination: {
+              paginationModel: { pageSize: 6 },
+            },
+          }}
+          pageSizeOptions={[6, 15, 30, 100]}
+        />
+      </div>
+    );
+  }
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
+  if (isError) {
+    return toast.error(
+      "Oups, une erreur serveur c'est produite en essayant de récupérer les clients",
+      {
+        position: toast.POSITION.TOP_RIGHT,
+      }
+    );
+  }
+
+  if (data) {
+    return (
+      <div>
+        <DataGrid
+          rows={data.customers}
+          columns={columns}
+          initialState={{
+            pagination: {
+              sortModel: [{ field: "id", sort: "desc" }],
               paginationModel: { pageSize: 6 },
             },
           }}
