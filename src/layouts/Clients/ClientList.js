@@ -37,6 +37,35 @@ const ClientList = () => {
           columns={columns}
           initialState={{
             pagination: {
+              paginationModel: { pageSize: 6 },
+            },
+          }}
+          pageSizeOptions={[6, 15, 30, 100]}
+        />
+      </div>
+    );
+  }
+  if (isLoading) {
+    return <CircularProgress />;
+  }
+
+  if (isError) {
+    return toast.error(
+      "Oups, une erreur serveur c'est produite en essayant de récupérer les clients",
+      {
+        position: toast.POSITION.TOP_RIGHT,
+      }
+    );
+  }
+
+  if (data) {
+    return (
+      <div>
+        <DataGrid
+          rows={data.customers}
+          columns={columns}
+          initialState={{
+            pagination: {
               sortModel: [{ field: "id", sort: "desc" }],
               paginationModel: { pageSize: 6 },
             },
@@ -47,4 +76,5 @@ const ClientList = () => {
     );
   }
 };
+
 export default ClientList;
