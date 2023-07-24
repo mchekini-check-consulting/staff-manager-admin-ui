@@ -4,6 +4,7 @@ import { baseQuery } from "config/baseQuery";
 export const generalApi = createApi({
   baseQuery,
   reducerPath: "general",
+  keepUnusedDataFor: 0,
   endpoints: (builder) => ({
     fetchVersion: builder.query({
       query: () => "/app/details",

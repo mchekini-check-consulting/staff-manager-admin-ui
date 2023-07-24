@@ -1,9 +1,6 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "config/baseQuery";
+import { generalApi } from "services/general.api";
 
-export const collaboratorApi = createApi({
-  reducerPath: "collaboratorApi",
-  baseQuery: baseQuery,
+export const collaboratorApi = generalApi.injectEndpoints({
   endpoints: (builder) => ({
     createCollaborator: builder.mutation({
       query: (body) => ({
