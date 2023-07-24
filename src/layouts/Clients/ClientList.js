@@ -37,6 +37,7 @@ const ClientList = () => {
           columns={columns}
           initialState={{
             pagination: {
+              sortModel: [{ field: "id", sort: "desc" }],
               paginationModel: { pageSize: 6 },
             },
           }}
