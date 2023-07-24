@@ -1,8 +1,9 @@
-import { CircularProgress } from "@mui/material";
+import { Badge, Box, CircularProgress, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGetAllClientsQuery } from "services/clients/client.api.slice";
+import NewClient from "./NewClient";
 
 const ClientList = () => {
   const { data: data, isLoading, isError } = useGetAllClientsQuery();
@@ -16,65 +17,48 @@ const ClientList = () => {
     { field: "customerTvaNumber", headerName: "N° TVA", flex: 1 },
   ];
 
-  if (isLoading) {
-    return <CircularProgress />;
-  }
-
-  if (isError) {
-    return toast.error(
-      "Oups, une erreur serveur c'est produite en essayant de récupérer les clients",
-      {
-        position: toast.POSITION.TOP_RIGHT,
-      }
-    );
-  }
-
-  if (data) {
-    return (
-      <div>
-        <DataGrid
-          rows={data.customers}
-          columns={columns}
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 6 },
-            },
-          }}
-          pageSizeOptions={[6, 15, 30, 100]}
-        />
-      </div>
-    );
-  }
-  if (isLoading) {
-    return <CircularProgress />;
-  }
-
-  if (isError) {
-    return toast.error(
-      "Oups, une erreur serveur c'est produite en essayant de récupérer les clients",
-      {
-        position: toast.POSITION.TOP_RIGHT,
-      }
-    );
-  }
-
-  if (data) {
-    return (
-      <div>
-        <DataGrid
-          rows={data.customers}
-          columns={columns}
-          initialState={{
-            pagination: {
-              sortModel: [{ field: "id", sort: "desc" }],
-              paginationModel: { pageSize: 6 },
-            },
-          }}
-          pageSizeOptions={[6, 15, 30, 100]}
-        />
-      </div>
-    );
-  }
+  return (
+    <div>
+      <Stack gap={2}>
+        <Stack>
+          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
+            <Badge badgeContent={data ? data.customers.length : "0"} color="secondary">
+              <Typography variant="h4" component="h2">
+                Clients
+              </Typography>
+            </Badge>
+            <NewClient />
+          </Box>
+        </Stack>
+        <Stack>
+          {isError ? (
+            toast.error(
+              "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
+              {
+                position: toast.POSITION.TOP_RIGHT,
+              }
+            )
+          ) : isLoading ? (
+            <CircularProgress />
+          ) : data ? (
+            <DataGrid
+              rows={data.customers}
+              columns={columns}
+              initialState={{
+                pagination: {
+                  sorting: {
+                    sortModel: [{ field: "id", sort: "desc" }],
+                  },
+                  paginationModel: { pageSize: 15 },
+                },
+              }}
+              pageSizeOptions={[5, 10, 15, 50, 100]}
+            />
+          ) : null}
+        </Stack>
+      </Stack>
+    </div>
+  );
 };
 
 export default ClientList;

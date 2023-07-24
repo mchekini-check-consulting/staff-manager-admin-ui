@@ -8,13 +8,8 @@ function Clients() {
   return (
     <ContentLayout>
       <ContentNavbar />
-      <Stack gap={2}>
-        <Stack alignItems={"flex-end"}>
-          <NewClient />
-        </Stack>
-        <Stack>
-          <ClientList />
-        </Stack>
+      <Stack>
+        <ClientList />
       </Stack>
     </ContentLayout>
   );
