@@ -1,9 +1,6 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "config/baseQuery";
+import { generalApi } from "services/general.api";
 
-export const clientsApi = createApi({
-  reducerPath: "clientsApi",
-  baseQuery: baseQuery,
+export const clientsApi = generalApi.injectEndpoints({
   tagTypes: ["Clients"],
   endpoints: (builder) => ({
     getAllClients: builder.query({
