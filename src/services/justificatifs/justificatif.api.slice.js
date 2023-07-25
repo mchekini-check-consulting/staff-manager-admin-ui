@@ -1,13 +1,10 @@
-import { createApi } from "@reduxjs/toolkit/query/react";
-import { baseQuery } from "config/baseQuery";
+import { generalApi } from "../general.api";
 
-export const documentApi = createApi({
-  reducerPath: "collaboratorApi",
-  baseQuery: baseQuery,
+export const documentApi = generalApi.injectEndpoints({
   endpoints: (builder) => ({
     searchDocuments: builder.mutation({
       query: (body) => ({
-        url: "documents/search",
+        url: "justificatif/search",
         method: "POST",
         body,
       }),

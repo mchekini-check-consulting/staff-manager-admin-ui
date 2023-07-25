@@ -12,10 +12,13 @@ import {
   FormControl,
   Button,
   Checkbox,
+  Typography,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DOC_TYPES } from "constants/documentTypes";
+import { useSearchDocumentsMutation } from "../../services/justificatifs/justificatif.api.slice";
+import Loader from "components/Loader";
 
 const styles = {
   header: {
@@ -46,50 +49,63 @@ const styles = {
       paddingRight: "12px",
     },
   },
+  spinner: {
+    alignItems: "center",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+  },
 };
 
 const columns = [
   {
-    field: "name",
+    field: "collaborator",
     headerName: "Nom et Prenom",
     width: 200,
   },
   {
-    field: "documentType",
+    field: "type",
+    valueGetter: (params) => {
+      let type = DOC_TYPES.find((e, i) => params.value == e.value);
+      return type.label;
+    },
     headerName: "Type de justificatif ",
     width: 200,
   },
   {
-    field: "documentName",
+    field: "name",
     headerName: "Nom du document",
     width: 180,
   },
   {
-    field: "documentCreationDate",
+    field: "createdAt",
     headerName: "Date d'ajout du document",
     width: 180,
   },
 ];
 
+const collaborators = [
+  {
+    id: 1,
+    name: "amine amine",
+  },
+  {
+    id: 2,
+    name: "Anis Anis",
+  },
+  {
+    id: 3,
+    name: "Aymen Aymen",
+  },
+];
+
 function Justificatif() {
-  const [names, setNames] = useState([]);
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
-  const [documents, setDocuments] = useState([]);
   const [columnWidth, setColumnWidth] = useState();
-  const [errors, setErrors] = useState([]);
   const boxRef = useRef(null);
 
-  useEffect(() => {
-    fetch("./mockedData/collaboratorsList.json")
-      .then((response) => response.json())
-      .then((data) => {
-        setNames(data);
-      })
-      .catch((err) => {
-        setErrors([...errors, { type: "getCollaborators", message: err }]);
-      });
-  }, []);
+  const [searchDocuments, { data, error, isLoading }] = useSearchDocumentsMutation();
 
   useEffect(() => {
     getData();
@@ -104,12 +120,11 @@ function Justificatif() {
   }, [boxRef]);
 
   const getData = () => {
-    fetch("./mockedData/documentsList.json")
-      .then((response) => response.json())
-      .then((data) => setDocuments(data))
-      .catch((err) => {
-        setErrors([...errors, { type: "getDocuments", message: err }]);
-      });
+    let data = {
+      collaborators: [...selectedNames?.map((e, i) => e.id)],
+      types: [...selectedTypes?.map((e, i) => e.value)],
+    };
+    searchDocuments(data);
   };
 
   const renderSelectedNames = (selected) => (
@@ -142,6 +157,52 @@ function Justificatif() {
     </Stack>
   );
 
+  const renderTypes = () => {
+    return DOC_TYPES.map((item) => {
+      let checked = selectedTypes.some((selectedItem) => item.value === selectedItem.value);
+      return (
+        <MenuItem key={item.id} value={item}>
+          <Checkbox
+            checked={checked}
+            onChange={() => {
+              if (checked) {
+                setSelectedTypes(
+                  selectedTypes.filter((selectedItem) => item.value !== selectedItem.value)
+                );
+              } else {
+                setSelectedTypes([...selectedTypes, item]);
+              }
+            }}
+          />
+          {item.label}
+        </MenuItem>
+      );
+    });
+  };
+
+  const renderNames = () => {
+    return collaborators.map((item) => {
+      let checked = selectedNames.some((selectedItem) => selectedItem.id === item.id);
+      return (
+        <MenuItem key={item.id} value={item}>
+          <Checkbox
+            checked={checked}
+            onChange={() => {
+              if (checked) {
+                setSelectedNames(
+                  selectedNames.filter((selectedItem) => selectedItem.id !== item.id)
+                );
+              } else {
+                setSelectedNames([...selectedNames, item]);
+              }
+            }}
+          />
+          {item.name}
+        </MenuItem>
+      );
+    });
+  };
+
   return (
     <ContentLayout>
       <ContentNavbar />
@@ -166,23 +227,7 @@ function Justificatif() {
               },
             }}
           >
-            {names.map((item) => (
-              <MenuItem key={item.id} value={item}>
-                <Checkbox
-                  checked={selectedNames.some((selectedItem) => selectedItem.id === item.id)}
-                  onChange={() => {
-                    if (selectedNames.some((selectedItem) => selectedItem.id === item.id)) {
-                      setSelectedNames(
-                        selectedNames.filter((selectedItem) => selectedItem.id !== item.id)
-                      );
-                    } else {
-                      setSelectedNames([...selectedNames, item]);
-                    }
-                  }}
-                />
-                {item.name}
-              </MenuItem>
-            ))}
+            {renderNames()}
           </Select>
         </FormControl>
 
@@ -204,23 +249,7 @@ function Justificatif() {
               },
             }}
           >
-            {DOC_TYPES.map((item, i) => (
-              <MenuItem key={i} value={item}>
-                <Checkbox
-                  checked={selectedTypes.some((selectedItem) => item.value === selectedItem.value)}
-                  onChange={() => {
-                    if (selectedTypes.some((selectedItem) => item.value === selectedItem.value)) {
-                      setSelectedTypes(
-                        selectedTypes.filter((selectedItem) => item.value !== selectedItem.value)
-                      );
-                    } else {
-                      setSelectedTypes([...selectedTypes, item]);
-                    }
-                  }}
-                />
-                {item.label}
-              </MenuItem>
-            ))}
+            {renderTypes()}
           </Select>
         </FormControl>
 
@@ -230,23 +259,37 @@ function Justificatif() {
       </Box>
 
       <Box sx={{ height: "90%", width: "100%" }}>
-        <DataGrid
-          rows={documents}
-          columns={columns.map((col) => ({ ...col, width: columnWidth - 5 }))}
-          sx={{
-            "& .MuiDataGrid-cell:hover": {
-              color: "primary.main",
-              cursor: "pointer",
-            },
-          }}
-          initialState={{
-            pagination: {
-              paginationModel: { pageSize: 6 },
-            },
-          }}
-          pageSizeOptions={[6, 15, 30, 100]}
-          disableRowSelectionOnClick
-        />
+        {error ? (
+          <Typography variant="body1" sx={{ color: "red" }}>
+            Erreur ! Veuillex reesayer plus tard
+          </Typography>
+        ) : isLoading ? (
+          <Box style={styles.spinner}>
+            <Loader />
+          </Box>
+        ) : !data || data.length === 0 ? (
+          <Typography variant="body1" sx={{ color: "red" }}>
+            Aucun document n{"\u2019"}est trouvé.
+          </Typography>
+        ) : (
+          <DataGrid
+            rows={data}
+            columns={columns.map((col) => ({ ...col, width: columnWidth - 5 }))}
+            sx={{
+              "& .MuiDataGrid-cell:hover": {
+                color: "primary.main",
+                cursor: "pointer",
+              },
+            }}
+            initialState={{
+              pagination: {
+                paginationModel: { pageSize: 6 },
+              },
+            }}
+            pageSizeOptions={[6, 15, 30, 100]}
+            disableRowSelectionOnClick
+          />
+        )}
       </Box>
     </ContentLayout>
   );
