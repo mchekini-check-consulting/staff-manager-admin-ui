@@ -8,11 +8,13 @@ export const missionSlice = generalApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      invalidatesTags: ["Missions"],
     }),
     getMissions: builder.query({
       query: () => ({
         url: "/mission",
       }),
+      providesTags: ["Missions"],
     }),
   }),
 });

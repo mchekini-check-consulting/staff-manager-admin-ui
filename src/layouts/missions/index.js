@@ -4,7 +4,7 @@ import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import Typography from "components/MD/MDTypography";
 import AddMission from "./modals/addMission";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { styled } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -13,10 +13,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { useGetMissionsQuery } from "services/missions/missionSlice";
 
 const columns = [
-  { field: "missionName", headerName: "Nom de la mission", flex: 0.7 },
+  { field: "missionName", headerName: "Nom de la mission", flex: 1 },
   {
     field: "startingDate",
-    headerName: "Date de début ",
+    headerName: "Date de début",
     flex: 0.7,
   },
   {
@@ -30,14 +30,14 @@ const columns = [
     flex: 0.8,
   },
   {
-    field: "customerContactFirstName",
-    headerName: "prénom du Contact",
-    flex: 1,
-  },
-  {
-    field: "customerContactLastName",
-    headerName: "nom du Contact",
-    flex: 1,
+    field: "customerContactFullName",
+    valueGetter: (params) => {
+      return `${params.row.customerContactFirstName || ""} ${
+        params.row.customerContactLastName || ""
+      }`;
+    },
+    headerName: "Contact",
+    flex: 1.5,
   },
   {
     field: "customerContactEmail",
@@ -50,19 +50,17 @@ const columns = [
     flex: 0.8,
   },
   {
-    field: "collaboratorFirstName",
-    headerName: "prénom collaborateur",
-    flex: 1,
-  },
-  {
-    field: "collaboratorLastName",
-    headerName: "nom collaborateur",
-    flex: 1,
+    field: "collaboratorFullName",
+    valueGetter: (params) => {
+      return `${params.row.collaboratorFirstName || ""} ${params.row.collaboratorLastName || ""}`;
+    },
+    headerName: "collaborateur",
+    flex: 1.5,
   },
   {
     field: "missionDescription",
     headerName: "description",
-    flex: 2,
+    flex: 1,
   },
 ];
 
