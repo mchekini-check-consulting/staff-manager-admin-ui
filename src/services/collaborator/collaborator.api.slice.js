@@ -2,6 +2,12 @@ import { generalApi } from "services/general.api";
 
 export const collaboratorApi = generalApi.injectEndpoints({
   endpoints: (builder) => ({
+    getAllCollaborators: builder.query({
+      query: () => "collaborator",
+    }),
+    getCollaborator: builder.query({
+      query: (collaboratorId) => `collaborator/${collaboratorId}`,
+    }),
     createCollaborator: builder.mutation({
       query: (body) => ({
         url: "collaborator",
@@ -12,4 +18,8 @@ export const collaboratorApi = generalApi.injectEndpoints({
   }),
 });
 
-export const { useCreateCollaboratorMutation } = collaboratorApi;
+export const {
+  useGetAllCollaboratorsQuery,
+  useGetCollaboratorQuery,
+  useCreateCollaboratorMutation,
+} = collaboratorApi;
