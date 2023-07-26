@@ -18,6 +18,7 @@ import { DataGrid } from "@mui/x-data-grid";
 import CancelIcon from "@mui/icons-material/Cancel";
 import { DOC_TYPES } from "constants/documentTypes";
 import { useSearchDocumentsMutation } from "../../services/justificatifs/justificatif.api.slice";
+import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
 import Loader from "components/Loader";
 
 const styles = {
@@ -84,32 +85,27 @@ const columns = [
   },
 ];
 
-const collaborators = [
-  {
-    id: 1,
-    name: "amine amine",
-  },
-  {
-    id: 2,
-    name: "Anis Anis",
-  },
-  {
-    id: 3,
-    name: "Aymen Aymen",
-  },
-];
-
 function Justificatif() {
   const [selectedNames, setSelectedNames] = useState([]);
   const [selectedTypes, setSelectedTypes] = useState([]);
+  const [collaborators, setCollaborators] = useState([]);
   const [columnWidth, setColumnWidth] = useState();
   const boxRef = useRef(null);
 
   const [searchDocuments, { data, error, isLoading }] = useSearchDocumentsMutation();
+  const {
+    data: allCollaborators,
+    error: collaboratorsError,
+    isLoading: loadingCollaborators,
+  } = useGetAllCollaboratorsQuery();
 
   useEffect(() => {
     getData();
   }, []);
+
+  useEffect(() => {
+    if (allCollaborators) setCollaborators(allCollaborators);
+  }, [allCollaborators]);
 
   useEffect(() => {
     if (boxRef.current) {
@@ -127,12 +123,16 @@ function Justificatif() {
     searchDocuments(data);
   };
 
+  const Loading = <Typography variant="body1">Chargement ...</Typography>;
+  const Error = <Typography variant="body1">Erreur !</Typography>;
+  const Empty = <Typography variant="body1">Aucun élément n{"\u2019"}est trouvé</Typography>;
+
   const renderSelectedNames = (selected) => (
     <Stack gap={1} direction="row" flexWrap="nowrap" overflow="auto">
       {selected.map((value) => (
         <Chip
           key={value.id}
-          label={value.name}
+          label={value.firstName + " " + value.lastName}
           onDelete={() => {
             setSelectedNames(selectedNames.filter((item) => item.id !== value.id));
           }}
@@ -181,7 +181,11 @@ function Justificatif() {
   };
 
   const renderNames = () => {
-    return collaborators.map((item) => {
+    if (loadingCollaborators) return Loading;
+    if (collaboratorsError) return Error;
+    if (!collaborators.length) return Empty;
+
+    return collaborators?.map((item) => {
       let checked = selectedNames.some((selectedItem) => selectedItem.id === item.id);
       return (
         <MenuItem key={item.id} value={item}>
@@ -197,7 +201,7 @@ function Justificatif() {
               }
             }}
           />
-          {item.name}
+          {item.firstName + " " + item.lastName}
         </MenuItem>
       );
     });
@@ -208,7 +212,7 @@ function Justificatif() {
       <ContentNavbar />
       <Box ref={boxRef} sx={styles.header} direction={{ xs: "column", sm: "row" }}>
         <FormControl sx={{ width: "40%" }}>
-          <InputLabel>Nom et prenom</InputLabel>
+          <InputLabel>Nom et prénom</InputLabel>
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
@@ -261,7 +265,7 @@ function Justificatif() {
       <Box sx={{ height: "90%", width: "100%" }}>
         {error ? (
           <Typography variant="body1" sx={{ color: "red" }}>
-            Erreur ! Veuillex reesayer plus tard
+            Erreur ! Veuillez réesayer plus tard
           </Typography>
         ) : isLoading ? (
           <Box style={styles.spinner}>
