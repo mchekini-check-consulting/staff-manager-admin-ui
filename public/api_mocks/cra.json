@@ -1,0 +1,23 @@
+[
+    {
+      "collaboratorLastName": "BARDOT",
+      "collaboratorFirstName": "Madjid",
+      "declaredDays": 19,
+      "billedDays": 15,
+      "rttRedemption": 0,
+      "absenceDays": 3,
+      "extraHoursInDays": 0.25,
+      "onCallHoursInDays": 0.5
+    },
+    {
+        "collaboratorLastName": "Blak",
+        "collaboratorFirstName": "John",
+        "declaredDays": 25,
+        "billedDays": 22,
+        "rttRedemption": 2,
+        "absenceDays": 7,
+        "extraHoursInDays": 0.25,
+        "onCallHoursInDays": 0.5
+      }
+   
+  ]
