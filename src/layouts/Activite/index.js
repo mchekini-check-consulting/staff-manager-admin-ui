@@ -1,10 +1,11 @@
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
+import CircularProgress from "@mui/material/CircularProgress";
 import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { useGetActivitiesQuery } from "services/activity/activity.api.slice";
-import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
+import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 
 const columns = [
@@ -40,7 +41,12 @@ const columns = [
 ];
 
 function Activity() {
-  const { data, error, isLoading } = useGetActivitiesQuery();
+  const { tokenPersisted } = useSelector((state) => state.generalSlice);
+
+  const { data, error, isLoading } = useGetActivitiesQuery(null, {
+    skip: !tokenPersisted,
+  });
+
   return (
     <ContentLayout>
       <ContentNavbar />

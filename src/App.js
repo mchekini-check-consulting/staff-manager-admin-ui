@@ -11,9 +11,12 @@ import theme from "assets/theme";
 import routes from "./config/routes";
 import { ToastContainer } from "react-toastify";
 import Loader from "components/Loader";
+import { tokenPersisted } from "services/general.slice";
+import { useDispatch } from "react-redux";
 
 export default function App() {
   const { keycloak, initialized } = useKeycloak();
+  const dispatch = useDispatch();
 
   const { data, isLoading } = useFetchVersionQuery();
 
@@ -21,6 +24,7 @@ export default function App() {
     if (keycloak.authenticated) {
       localStorage.setItem("accessToken", keycloak.token);
       localStorage.setItem("refreshToken", keycloak.refreshToken);
+      dispatch(tokenPersisted(true));
     }
 
     if (!keycloak.authenticated && initialized) {
