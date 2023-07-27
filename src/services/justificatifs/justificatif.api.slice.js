@@ -9,7 +9,18 @@ export const documentApi = generalApi.injectEndpoints({
         body,
       }),
     }),
+    getDocCollab: builder.query({
+      query: (docName) => ({
+        url: `justificatif/${docName}`,
+        responseType: "arraybuffer",
+        responseHandler: async (res) => {
+          const blob = await res.blob();
+          return window.URL.createObjectURL(blob);
+        },
+        cache: "no-cache",
+      }),
+    }),
   }),
 });
 
-export const { useSearchDocumentsMutation } = documentApi;
+export const { useSearchDocumentsMutation, useGetDocCollabQuery } = documentApi;

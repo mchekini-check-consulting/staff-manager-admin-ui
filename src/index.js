@@ -10,6 +10,7 @@ import { store } from "./config/store";
 import keycloak from "./config/keycloak";
 
 import App from "App";
+import "./style.css";
 
 const container = document.getElementById("app");
 const root = createRoot(container);
