@@ -1,25 +1,28 @@
-import ContentLayout from "components/ContentLayout";
-import ContentNavbar from "components/ContentNavbar";
-import { useState, useEffect, useRef } from "react";
+/* eslint-disable react/prop-types */
+import CancelIcon from "@mui/icons-material/Cancel";
 import {
   Box,
-  OutlinedInput,
-  MenuItem,
-  Select,
-  Stack,
-  Chip,
-  InputLabel,
-  FormControl,
   Button,
   Checkbox,
+  Chip,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  OutlinedInput,
+  Select,
+  Stack,
   Typography,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import CancelIcon from "@mui/icons-material/Cancel";
-import { DOC_TYPES } from "constants/documentTypes";
-import { useSearchDocumentsMutation } from "../../services/justificatifs/justificatif.api.slice";
-import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
+import ContentLayout from "components/ContentLayout";
+import ContentNavbar from "components/ContentNavbar";
 import Loader from "components/Loader";
+import { DOC_TYPES } from "constants/documentTypes";
+import React, { useEffect, useRef, useState } from "react";
+import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
+import { useSearchDocumentsMutation } from "../../services/justificatifs/justificatif.api.slice";
+import DocumentActions from "../../components/DocumentActions";
+import "./style.css";
 
 const styles = {
   header: {
@@ -71,7 +74,7 @@ const columns = [
       return type.label;
     },
     headerName: "Type de justificatif ",
-    width: 200,
+    width: 180,
   },
   {
     field: "name",
@@ -83,6 +86,13 @@ const columns = [
     headerName: "Date d'ajout du document",
     width: 180,
   },
+
+  {
+    field: "Actions",
+    headerName: "Actions",
+    width: 180,
+    renderCell: (params) => <DocumentActions {...{ params }} />,
+  },
 ];
 
 function Justificatif() {
@@ -92,7 +102,7 @@ function Justificatif() {
   const [columnWidth, setColumnWidth] = useState();
   const boxRef = useRef(null);
 
-  const [searchDocuments, { data, error, isLoading }] = useSearchDocumentsMutation();
+  const [searchDocuments, { data: searchDocs, error, isLoading }] = useSearchDocumentsMutation();
   const {
     data: allCollaborators,
     error: collaboratorsError,
@@ -141,7 +151,6 @@ function Justificatif() {
       ))}
     </Stack>
   );
-
   const renderSelectedTypes = (selected) => (
     <Stack gap={1} direction="row" flexWrap="nowrap" overflow={"auto"}>
       {selected.map((value, index) => (
@@ -156,12 +165,11 @@ function Justificatif() {
       ))}
     </Stack>
   );
-
   const renderTypes = () => {
-    return DOC_TYPES.map((item) => {
+    return DOC_TYPES.map((item, idx) => {
       let checked = selectedTypes.some((selectedItem) => item.value === selectedItem.value);
       return (
-        <MenuItem key={item.id} value={item}>
+        <MenuItem key={idx} value={item}>
           <Checkbox
             checked={checked}
             onChange={() => {
@@ -179,16 +187,15 @@ function Justificatif() {
       );
     });
   };
-
   const renderNames = () => {
     if (loadingCollaborators) return Loading;
     if (collaboratorsError) return Error;
     if (!collaborators.length) return Empty;
 
-    return collaborators?.map((item) => {
+    return collaborators?.map((item, idx) => {
       let checked = selectedNames.some((selectedItem) => selectedItem.id === item.id);
       return (
-        <MenuItem key={item.id} value={item}>
+        <MenuItem key={idx} value={item}>
           <Checkbox
             checked={checked}
             onChange={() => {
@@ -261,7 +268,6 @@ function Justificatif() {
           Appliquer
         </Button>
       </Box>
-
       <Box sx={{ height: "90%", width: "100%" }}>
         {error ? (
           <Typography variant="body1" sx={{ color: "red" }}>
@@ -271,13 +277,13 @@ function Justificatif() {
           <Box style={styles.spinner}>
             <Loader />
           </Box>
-        ) : !data || data.length === 0 ? (
+        ) : !searchDocs || searchDocs.length === 0 ? (
           <Typography variant="body1" sx={{ color: "red" }}>
-            Aucun document n{"\u2019"}est trouvé.
+            Aucun document n{"\u2019"}a été trouvé.
           </Typography>
         ) : (
           <DataGrid
-            rows={data}
+            rows={searchDocs}
             columns={columns.map((col) => ({ ...col, width: columnWidth - 5 }))}
             sx={{
               "& .MuiDataGrid-cell:hover": {
