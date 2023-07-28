@@ -2,7 +2,6 @@ import CancelIcon from "@mui/icons-material/Cancel";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
 import SendIcon from "@mui/icons-material/Send";
 import {
-  Alert,
   Box,
   Button,
   Dialog,
@@ -12,17 +11,16 @@ import {
   DialogTitle,
   Stack,
   TextField,
-  Snackbar,
 } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
-import { resetForm, togglePopup, updateForm, toggleSnackbar } from "services/clients/client.slice";
+import { resetForm, togglePopup, updateForm } from "services/clients/client.slice";
 import { useCreateClientMutation } from "services/clients/client.api.slice";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const NewClientPopup = () => {
   const dispatch = useDispatch();
   const openPopup = useSelector((s) => s.clients.openPopup);
-  const openSnackbar = useSelector((s) => s.clients.confirmClientCreation);
   const formData = useSelector((s) => s.clients.newClientForm);
   const [createClient, { error, isLoading, isSuccess }] = useCreateClientMutation();
 
@@ -48,16 +46,11 @@ const NewClientPopup = () => {
     if (isSuccess) {
       dispatch(togglePopup());
       dispatch(resetForm());
-      handleSnackbar();
-      toast.success("Le collaborateur a été créé avec succès", {
+      toast.success("Le Client a été créé avec succès", {
         autoClose: 2000,
       });
     }
   }, [isSuccess]);
-
-  const handleSnackbar = () => {
-    dispatch(toggleSnackbar());
-  };
 
   function isFormValid(formData) {
     for (const key in formData) {
@@ -70,11 +63,6 @@ const NewClientPopup = () => {
 
   return (
     <>
-      <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbar}>
-        <Alert onClose={handleSnackbar} severity="success" sx={{ width: "100%" }}>
-          Client crée avec success
-        </Alert>
-      </Snackbar>
       <Dialog open={openPopup} onClose={handleClose} fullWidth maxWidth="md">
         <Box p={2}>
           <DialogTitle>Créer Un Nouveau Client</DialogTitle>
