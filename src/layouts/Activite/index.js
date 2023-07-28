@@ -1,12 +1,12 @@
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import CircularProgress from "@mui/material/CircularProgress";
-import { DataGrid } from "@mui/x-data-grid";
 import { Box, Button } from "@mui/material";
 import { useGetActivitiesQuery } from "services/activity/activity.api.slice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
+import CustomDataGrid from "components/CustomDataGrid";
 
 const columns = [
   {
@@ -51,21 +51,15 @@ function Activity() {
     <ContentLayout>
       <ContentNavbar />
       {error ? (
-        toast.error("Oups, une erreur serveur c'est produite en essayant de récupérer les CRA.", {
+        toast.error("Une erreur serveur c'est produite en essayant de récupérer les CRA.", {
           position: toast.POSITION.TOP_RIGHT,
         })
       ) : isLoading ? (
         <CircularProgress />
       ) : data ? (
-        <DataGrid
+        <CustomDataGrid
           rows={data.map((item, index) => ({ ...item, id: index }))}
           columns={columns}
-          sx={{
-            "& .MuiDataGrid-cell:hover": {
-              color: "primary.main",
-            },
-          }}
-          pageSizeOptions={[10, 25, 50, 100]}
         />
       ) : null}
     </ContentLayout>

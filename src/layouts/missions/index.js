@@ -1,16 +1,14 @@
-import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
-import { Badge, Box, Button } from "@mui/material";
+import { Stack } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
-import Typography from "components/MD/MDTypography";
-import AddMission from "./modals/addMission";
+import EnteteDatagrid from "components/EnteteDatagrid";
 import { useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
-import { styled } from "@mui/material/styles";
-import CircularProgress from "@mui/material/CircularProgress";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGetMissionsQuery } from "services/missions/missionSlice";
+import AddMission from "./modals/addMission";
+import CustomDataGrid from "components/CustomDataGrid";
 
 const columns = [
   { field: "missionName", headerName: "Nom de la mission", flex: 1 },
@@ -30,79 +28,32 @@ const columns = [
     flex: 0.8,
   },
   {
-    field: "customerContactFullName",
-    valueGetter: (params) => {
-      return `${params.row.customerContactFirstName || ""} ${
-        params.row.customerContactLastName || ""
-      }`;
-    },
-    headerName: "Contact",
-    flex: 1.5,
-  },
-  {
-    field: "customerContactEmail",
-    headerName: "Email du contact",
-    flex: 1.4,
-  },
-  {
-    field: "customerContactPhone",
-    headerName: "Téléphone du contact",
-    flex: 0.8,
-  },
-  {
     field: "collaboratorFullName",
     valueGetter: (params) => {
       return `${params.row.collaboratorFirstName || ""} ${params.row.collaboratorLastName || ""}`;
     },
-    headerName: "collaborateur",
-    flex: 1.5,
-  },
-  {
-    field: "missionDescription",
-    headerName: "description",
+    headerName: "Collaborateur",
     flex: 1,
   },
 ];
-
-const StyledBadge = styled(Badge)(({ theme }) => ({
-  "& .MuiBadge-badge": {
-    right: -13,
-    top: 17,
-    border: `2px solid ${theme.palette.background.paper}`,
-    padding: "0 4px",
-  },
-}));
 
 export default function Missions() {
   const [openModal, setOpenModal] = useState(false);
   const handleOpenAddModal = () => setOpenModal(true);
   const handleCloseModal = () => setOpenModal(false);
   const { data, error, isLoading } = useGetMissionsQuery();
-
   return (
     <>
       <AddMission open={openModal} onClose={handleCloseModal} />
-
       <ContentLayout>
         <ContentNavbar />
-        <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-          <StyledBadge badgeContent={data ? data.length : "0"} color="secondary">
-            <Typography variant="h4" component="h2">
-              Missions
-            </Typography>
-          </StyledBadge>
-
-          <Button
-            variant="contained"
-            onClick={handleOpenAddModal}
-            sx={{ color: "#FFFFFF" }}
-            endIcon={<AddCircleOutlineOutlinedIcon />}
-          >
-            Ajouter une mission
-          </Button>
-        </Box>
-
-        <Box sx={{ height: "90%", width: "100%", mt: 3 }}>
+        <Stack gap={2}>
+          <EnteteDatagrid
+            enteteText={"Missions"}
+            ctaButtonOnClick={handleOpenAddModal}
+            ctaButtonText={"Ajouter Une Mission"}
+            totalCount={data ? data?.length : null}
+          />
           {error ? (
             toast.error(
               "Oups, une erreur serveur c'est produite en essayant de récupérer les missions",
@@ -113,19 +64,9 @@ export default function Missions() {
           ) : isLoading ? (
             <CircularProgress />
           ) : data ? (
-            <DataGrid
-              rows={data}
-              columns={columns}
-              sx={{
-                "& .MuiDataGrid-cell:hover": {
-                  color: "primary.main",
-                },
-                fontSize: "0.7rem",
-              }}
-              disableRowSelectionOnClick
-            />
+            <CustomDataGrid columns={columns} rows={data} />
           ) : null}
-        </Box>
+        </Stack>
       </ContentLayout>
     </>
   );

@@ -1,12 +1,16 @@
 import { Badge, Box, CircularProgress, Stack, Typography } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
+import CustomDataGrid from "components/CustomDataGrid";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGetAllClientsQuery } from "services/clients/client.api.slice";
-import NewClient from "./NewClient";
+import EnteteDatagrid from "components/EnteteDatagrid";
+import { useDispatch } from "react-redux";
+import { togglePopup } from "services/clients/client.slice";
+import NewClientPopup from "./NewClient";
 
 const ClientList = () => {
   const { data: data, isLoading, isError } = useGetAllClientsQuery();
+  const dispatch = useDispatch();
 
   const columns = [
     { field: "id", headerName: "Id", flex: 0.5 },
@@ -17,19 +21,20 @@ const ClientList = () => {
     { field: "customerTvaNumber", headerName: "N° TVA", flex: 1 },
   ];
 
+  const handleOpen = () => {
+    dispatch(togglePopup());
+  };
+
   return (
     <div>
+      <NewClientPopup />
       <Stack gap={2}>
-        <Stack>
-          <Box sx={{ display: "flex", justifyContent: "space-between", mt: 2 }}>
-            <Badge badgeContent={data ? data.customers.length : "0"} color="secondary">
-              <Typography variant="h4" component="h2">
-                Clients
-              </Typography>
-            </Badge>
-            <NewClient />
-          </Box>
-        </Stack>
+        <EnteteDatagrid
+          enteteText={"Clients"}
+          ctaButtonOnClick={handleOpen}
+          ctaButtonText={"Ajouter Un Client"}
+          totalCount={data ? data?.customers?.length : null}
+        />
         <Stack>
           {isError ? (
             toast.error(
@@ -41,19 +46,7 @@ const ClientList = () => {
           ) : isLoading ? (
             <CircularProgress />
           ) : data ? (
-            <DataGrid
-              rows={data.customers}
-              columns={columns}
-              initialState={{
-                pagination: {
-                  sorting: {
-                    sortModel: [{ field: "id", sort: "desc" }],
-                  },
-                  paginationModel: { pageSize: 15 },
-                },
-              }}
-              pageSizeOptions={[5, 10, 15, 50, 100]}
-            />
+            <CustomDataGrid rows={data.customers} columns={columns} />
           ) : null}
         </Stack>
       </Stack>
