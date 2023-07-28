@@ -19,16 +19,12 @@ import { resetForm, togglePopup, updateForm, toggleSnackbar } from "services/cli
 import { useCreateClientMutation } from "services/clients/client.api.slice";
 import { useEffect } from "react";
 
-const NewClient = () => {
+const NewClientPopup = () => {
   const dispatch = useDispatch();
   const openPopup = useSelector((s) => s.clients.openPopup);
   const openSnackbar = useSelector((s) => s.clients.confirmClientCreation);
   const formData = useSelector((s) => s.clients.newClientForm);
   const [createClient, { error, isLoading, isSuccess }] = useCreateClientMutation();
-
-  const handleOpen = (e) => {
-    dispatch(togglePopup());
-  };
 
   const handleClose = () => {
     dispatch(resetForm());
@@ -53,6 +49,9 @@ const NewClient = () => {
       dispatch(togglePopup());
       dispatch(resetForm());
       handleSnackbar();
+      toast.success("Le collaborateur a été créé avec succès", {
+        autoClose: 2000,
+      });
     }
   }, [isSuccess]);
 
@@ -71,9 +70,6 @@ const NewClient = () => {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="contained" color="warning" sx={{ color: "#333" }}>
-        Nouveau Client ➕
-      </Button>
       <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbar}>
         <Alert onClose={handleSnackbar} severity="success" sx={{ width: "100%" }}>
           Client crée avec success
@@ -198,4 +194,4 @@ const NewClient = () => {
   );
 };
 
-export default NewClient;
+export default NewClientPopup;
