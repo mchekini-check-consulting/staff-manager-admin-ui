@@ -1,18 +1,20 @@
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import React, { useEffect, useState } from "react";
-import { DataGrid } from "@mui/x-data-grid";
 import Button from "@mui/material/Button";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import {
   useCreateCollaboratorMutation,
   useGetAllCollaboratorsQuery,
-} from "../../services/collaborator/collaborator.api.slice";
+} from "services/collaborator/collaborator.api.slice";
 import "react-toastify/dist/ReactToastify.css";
+import EnteteDatagrid from "components/EnteteDatagrid";
+import CustomDataGrid from "components/CustomDataGrid";
+import { CircularProgress, Stack } from "@mui/material";
 
 const collaborateurColumns = [
   { field: "firstName", headerName: "Prénom", flex: 1 },
@@ -59,7 +61,7 @@ function Collaborateur() {
   const [collaborateurs, setCollaborateurs] = useState([]);
 
   // Utiliser le hook pour récupérer tous les collaborateurs depuis l'API
-  const { data, isLoading: isFetching } = useGetAllCollaboratorsQuery();
+  const { data, isLoading: getIsLoading, error: getError } = useGetAllCollaboratorsQuery();
 
   useEffect(() => {
     // Mettre à jour la liste des collaborateurs lorsque les données sont disponibles
@@ -101,10 +103,6 @@ function Collaborateur() {
       });
       // Fermer la popup
       setOpen(false);
-    } else if (error) {
-      toast.error("Erreur lors de la création du collaborateur", {
-        autoClose: 2000,
-      });
     }
   }, [isSuccess, error]);
 
@@ -147,23 +145,26 @@ function Collaborateur() {
   return (
     <ContentLayout>
       <ContentNavbar />
-
-      <Button onClick={handleOpen} variant="contained" style={buttonStyle}>
-        Ajouter Collaborateur
-      </Button>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-        <div style={{ flex: 1 }}>
-          <DataGrid
-            rows={collaborateurs} // Utiliser la variable "collaborateurs" ici
-            columns={collaborateurColumns}
-            pageSize={5}
-            autoHeight
-            components={{ Toolbar: null }}
-          />
-        </div>
-      </div>
-
+      <Stack gap={2}>
+        <EnteteDatagrid
+          enteteText={"Collaborateurs"}
+          ctaButtonOnClick={handleOpen}
+          ctaButtonText={"Ajouter Un Collaborateur"}
+          totalCount={collaborateurs ? collaborateurs?.length : null}
+        />
+        {getError ? (
+          toast.error(
+            "Oups, une erreur serveur c'est produite en essayant de récupérer les collaborateurs",
+            {
+              position: toast.POSITION.TOP_RIGHT,
+            }
+          )
+        ) : getIsLoading ? (
+          <CircularProgress />
+        ) : data ? (
+          <CustomDataGrid rows={collaborateurs} columns={collaborateurColumns} />
+        ) : null}
+      </Stack>
       <Modal
         open={open}
         onClose={handleClose}
@@ -250,8 +251,6 @@ function Collaborateur() {
           </form>
         </Box>
       </Modal>
-
-      <ToastContainer autoClose={2000} />
     </ContentLayout>
   );
 }

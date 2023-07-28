@@ -13,18 +13,15 @@ import {
   Stack,
   Typography,
 } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
 import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
+import CustomDataGrid from "components/CustomDataGrid";
 import Loader from "components/Loader";
 import { DOC_TYPES } from "constants/documentTypes";
-import React, { useEffect, useRef, useState } from "react";
-import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
-import {
-  useSearchDocumentsMutation,
-  useGetDocCollabQuery,
-} from "../../services/justificatifs/justificatif.api.slice";
+import { useEffect, useRef, useState } from "react";
 import DocumentActions from "../../components/DocumentActions";
+import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
+import { useSearchDocumentsMutation } from "../../services/justificatifs/justificatif.api.slice";
 
 const styles = {
   header: {
@@ -284,22 +281,9 @@ function Justificatif() {
             Aucun document n{"\u2019"}a été trouvé.
           </Typography>
         ) : (
-          <DataGrid
-            rows={searchDocs}
+          <CustomDataGrid
             columns={columns.map((col) => ({ ...col, width: columnWidth - 5 }))}
-            sx={{
-              "& .MuiDataGrid-cell:hover": {
-                color: "primary.main",
-                cursor: "pointer",
-              },
-            }}
-            initialState={{
-              pagination: {
-                paginationModel: { pageSize: 6 },
-              },
-            }}
-            pageSizeOptions={[6, 15, 30, 100]}
-            disableRowSelectionOnClick
+            rows={searchDocs}
           />
         )}
       </Box>
