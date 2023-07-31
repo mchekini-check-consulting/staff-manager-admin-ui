@@ -2,7 +2,7 @@ version: '2'
 services:
   staff-manager-api:
     container_name: staff-manager-admin-ui
-    image: mchekini/staff-manager-admin-ui:1.0
+    image: mchekini/staff-manager-admin-ui:${TAG}
     ports:
       - "81:80"
 
