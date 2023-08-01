@@ -46,7 +46,7 @@ const ClientList = () => {
           ) : isLoading ? (
             <CircularProgress />
           ) : data ? (
-            <CustomDataGrid rows={data.customers} columns={columns} />
+            <CustomDataGrid rows={data} columns={columns} />
           ) : null}
         </Stack>
       </Stack>
