@@ -152,8 +152,8 @@ export default function AddMission({ open, onClose }) {
                 value={data.nameMission}
                 onChange={(e) => setData({ ...data, nameMission: e.target.value })}
                 required
-                helperText={error?.data?.nameMission}
-                error={Boolean(error?.data?.nameMission)}
+                helperText={error?.validations?.nameMission}
+                error={Boolean(error?.validations?.nameMission)}
                 disabled={isLoading}
               />
 
@@ -166,8 +166,8 @@ export default function AddMission({ open, onClose }) {
                   required
                   slotProps={{
                     textField: {
-                      helperText: error?.data?.startingDateMission,
-                      error: Boolean(error?.data?.startingDateMission),
+                      helperText: error?.validations?.startingDateMission,
+                      error: Boolean(error?.validations?.startingDateMission),
                       disabled: isLoading,
                     },
                   }}
@@ -181,8 +181,8 @@ export default function AddMission({ open, onClose }) {
                   required
                   slotProps={{
                     textField: {
-                      helperText: error?.data?.endingDateMission,
-                      error: Boolean(error?.data?.endingDateMission),
+                      helperText: error?.validations?.endingDateMission,
+                      error: Boolean(error?.validations?.endingDateMission),
                       disabled: isLoading,
                     },
                   }}
@@ -196,8 +196,8 @@ export default function AddMission({ open, onClose }) {
                 value={data.customerId}
                 onChange={(e) => setData({ ...data, customerId: e.target.value })}
                 required
-                helperText={error?.data?.customerId}
-                error={Boolean(error?.data?.customerId)}
+                helperText={error?.validations?.customerId}
+                error={Boolean(error?.validations?.customerId)}
                 disabled={isLoading}
               >
                 <MenuItem value="" disabled>
@@ -239,8 +239,8 @@ export default function AddMission({ open, onClose }) {
                 value={data.customerContactLastname}
                 onChange={(e) => setData({ ...data, customerContactLastname: e.target.value })}
                 required
-                helperText={error?.data?.customerContactLastname}
-                error={Boolean(error?.data?.customerContactLastname)}
+                helperText={error?.validations?.customerContactLastname}
+                error={Boolean(error?.validations?.customerContactLastname)}
                 disabled={isLoading}
               />
 
@@ -250,8 +250,8 @@ export default function AddMission({ open, onClose }) {
                 value={data.customerContactFirstname}
                 onChange={(e) => setData({ ...data, customerContactFirstname: e.target.value })}
                 required
-                helperText={error?.data?.customerContactFirstname}
-                error={Boolean(error?.data?.customerContactFirstname)}
+                helperText={error?.validations?.customerContactFirstname}
+                error={Boolean(error?.validations?.customerContactFirstname)}
                 disabled={isLoading}
               />
 
@@ -261,8 +261,8 @@ export default function AddMission({ open, onClose }) {
                 value={data.customerContactEmail}
                 onChange={(e) => setData({ ...data, customerContactEmail: e.target.value })}
                 required
-                helperText={error?.data?.customerContactEmail}
-                error={Boolean(error?.data?.customerContactEmail)}
+                helperText={error?.validations?.customerContactEmail}
+                error={Boolean(error?.validations?.customerContactEmail)}
                 disabled={isLoading}
               />
 
@@ -272,8 +272,8 @@ export default function AddMission({ open, onClose }) {
                 value={data.customerContactPhone}
                 onChange={(e) => setData({ ...data, customerContactPhone: e.target.value })}
                 required
-                helperText={error?.data?.customerContactPhone}
-                error={Boolean(error?.data?.customerContactPhone)}
+                helperText={error?.validations?.customerContactPhone}
+                error={Boolean(error?.validations?.customerContactPhone)}
                 disabled={isLoading}
               />
 
