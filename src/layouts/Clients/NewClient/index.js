@@ -84,8 +84,8 @@ const NewClientPopup = () => {
                 fullWidth
                 variant="outlined"
                 disabled={isLoading}
-                helperText={error?.data?.customerEmail}
-                error={Boolean(error?.data?.customerEmail)}
+                helperText={error?.validations?.customerEmail}
+                error={Boolean(error?.validations?.customerEmail)}
               />
               <TextField
                 value={formData.customerName}
@@ -98,15 +98,15 @@ const NewClientPopup = () => {
                 fullWidth
                 disabled={isLoading}
                 variant="outlined"
-                helperText={error?.data?.customerName}
-                error={Boolean(error?.data?.customerName)}
+                helperText={error?.validations?.customerName}
+                error={Boolean(error?.validations?.customerName)}
               />
               <TextField
                 value={formData.customerAddress}
                 onChange={(e) => handleFormChange(e)}
                 name="customerAddress"
-                helperText={error?.data?.customerAddress}
-                error={Boolean(error?.data?.customerAddress)}
+                helperText={error?.validations?.customerAddress}
+                error={Boolean(error?.validations?.customerAddress)}
                 required
                 label="Adresse"
                 margin="dense"
@@ -125,8 +125,8 @@ const NewClientPopup = () => {
                 margin="dense"
                 type="tel"
                 fullWidth
-                helperText={error?.data?.customerPhone}
-                error={Boolean(error?.data?.customerPhone)}
+                helperText={error?.validations?.customerPhone}
+                error={Boolean(error?.validations?.customerPhone)}
               />
               <TextField
                 value={formData.customerTvaNumber}
@@ -138,8 +138,8 @@ const NewClientPopup = () => {
                 required
                 fullWidth
                 variant="outlined"
-                helperText={error?.data?.customerTvaNumber}
-                error={Boolean(error?.data?.customerTvaNumber)}
+                helperText={error?.validations?.customerTvaNumber}
+                error={Boolean(error?.validations?.customerTvaNumber)}
               />
             </form>
           </DialogContent>

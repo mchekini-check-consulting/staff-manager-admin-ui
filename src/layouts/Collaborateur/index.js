@@ -184,8 +184,8 @@ function Collaborateur() {
               required
               variant="outlined"
               disabled={isLoading}
-              error={Boolean(error?.data?.firstName)}
-              helperText={error?.data?.firstName}
+              error={Boolean(error?.validations?.firstName)}
+              helperText={error?.validations?.firstName}
             />
             <TextField
               name="lastName"
@@ -195,8 +195,8 @@ function Collaborateur() {
               required
               variant="outlined"
               disabled={isLoading}
-              error={Boolean(error?.data?.lastName)}
-              helperText={error?.data?.lastName}
+              error={Boolean(error?.validations?.lastName)}
+              helperText={error?.validations?.lastName}
             />
             <TextField
               name="email"
@@ -206,8 +206,8 @@ function Collaborateur() {
               required
               variant="outlined"
               disabled={isLoading}
-              error={Boolean(error?.data?.email)}
-              helperText={error?.data?.email}
+              error={Boolean(error?.validations?.email)}
+              helperText={error?.validations?.email}
             />
             <TextField
               name="phone"
@@ -217,8 +217,8 @@ function Collaborateur() {
               required
               variant="outlined"
               disabled={isLoading}
-              error={Boolean(error?.data?.phone)}
-              helperText={error?.data?.phone}
+              error={Boolean(error?.validations?.phone)}
+              helperText={error?.validations?.phone}
             />
             <TextField
               name="address"
@@ -228,8 +228,8 @@ function Collaborateur() {
               required
               variant="outlined"
               disabled={isLoading}
-              error={Boolean(error?.data?.address)}
-              helperText={error?.data?.address}
+              error={Boolean(error?.validations?.address)}
+              helperText={error?.validations?.address}
             />
             <Button
               type="submit"
