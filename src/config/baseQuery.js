@@ -11,3 +11,15 @@ export const baseQuery = fetchBaseQuery({
     return headers;
   },
 });
+
+export const transformedBaseQuery = () => async (args, api, extraOptions) => {
+  const response = await baseQuery(args, api, extraOptions);
+
+  const fineStatus = response.meta.response.status > 199 && response.meta.response.status < 300;
+
+  return {
+    ...response,
+    data: fineStatus && response.data?.payload,
+    error: !fineStatus && { status: response.error?.status, ...response.error?.data },
+  };
+};
