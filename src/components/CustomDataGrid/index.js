@@ -30,7 +30,6 @@ const CustomDataGrid = (props) => {
       }}
       localeText={frFR.components.MuiDataGrid.defaultProps.localeText} // traduction en Français ( bouttons , textes, text pagination ... tout - on peut changer sa )
       pageSizeOptions={[10, 25, 50, 100]}
-      checkboxSelection // ajoute des checkboxes, utile quand on ajoute la suppression ( en batch ) et la modification !
       disableRowSelectionOnClick
       {...props} // toutte config propre a votre cas ( columns, rows, isLoading ... ou autre ) va override cette config default
     />
