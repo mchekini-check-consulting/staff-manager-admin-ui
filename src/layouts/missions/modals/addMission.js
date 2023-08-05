@@ -11,6 +11,8 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import enGB from "date-fns/locale/en-GB";
 import { format } from "date-fns";
 import { useCreateMissionMutation } from "services/missions/missionSlice";
+import { useGetAllClientsQuery } from "services/clients/client.api.slice";
+import { useGetAllCollaboratorsQuery } from "services/collaborator/collaborator.api.slice";
 
 const style = {
   position: "absolute",
@@ -29,35 +31,6 @@ const formStyle = { display: "flex", gap: 4, "& .MuiTextField-root": { width: "1
 
 const blockStyle = { flex: 0.5, display: "flex", flexDirection: "column", gap: 2 };
 
-const clientsData = [
-  {
-    value: 1,
-    label: "Client 1",
-  },
-  {
-    value: 2,
-    label: "Client 2",
-  },
-  {
-    value: 3,
-    label: "Client 3",
-  },
-];
-const collabsData = [
-  {
-    value: 1,
-    label: "Collaborateur 1",
-  },
-  {
-    value: 2,
-    label: "Collaborateur 2",
-  },
-  {
-    value: 3,
-    label: "Collaborateur 3",
-  },
-];
-
 const initialData = {
   nameMission: "",
   startingDateMission: null,
@@ -73,11 +46,29 @@ const initialData = {
 
 export default function AddMission({ open, onClose }) {
   const [data, setData] = useState(initialData);
-  const [clients] = useState(clientsData);
-  const [collaborators] = useState(collabsData);
   const [snackbar, setSnackbar] = useState(false);
+  const [snackbarErrClient, setSnackbarErrClient] = useState(false);
+  const [snackbarErrCollab, setSnackbarErrCollab] = useState(false);
 
+  const {
+    data: Dclients,
+    isError: isErrorClients,
+    isLoading: isLoadingClients,
+  } = useGetAllClientsQuery();
+  const {
+    data: Dcollaborators,
+    isError: isErrorCollabs,
+    isLoading: isLoadingCollabs,
+  } = useGetAllCollaboratorsQuery();
   const [createMission, { error, isLoading, isSuccess }] = useCreateMissionMutation();
+
+  useEffect(() => {
+    if (isErrorClients && open) setSnackbarErrClient(true);
+  }, [isErrorClients]);
+
+  useEffect(() => {
+    if (isErrorCollabs && open) setSnackbarErrCollab(true);
+  }, [isErrorCollabs]);
 
   useEffect(() => {
     if (isSuccess) {
@@ -129,6 +120,29 @@ export default function AddMission({ open, onClose }) {
           Mission ajoutée avec success
         </Alert>
       </Snackbar>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarErrClient}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarErrClient(false)}
+      >
+        <Alert onClose={() => setSnackbarErrClient(false)} severity="error" sx={{ width: "100%" }}>
+          Oups, une erreur serveur s&lsquo;est produite lors du chargement des clients
+        </Alert>
+      </Snackbar>
+
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={snackbarErrCollab}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarErrCollab(false)}
+      >
+        <Alert onClose={() => setSnackbarErrCollab(false)} severity="error" sx={{ width: "100%" }}>
+          Oups, une erreur serveur s&lsquo;est produite lors du chargement des collaborateurs
+        </Alert>
+      </Snackbar>
+
       <Modal
         open={open}
         onClose={onClose}
@@ -203,11 +217,12 @@ export default function AddMission({ open, onClose }) {
                 <MenuItem value="" disabled>
                   Sélectionner un client
                 </MenuItem>
-                {clients.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
+                {Dclients &&
+                  Dclients.map((option) => (
+                    <MenuItem key={option.id} value={option.id}>
+                      {option.customerName}
+                    </MenuItem>
+                  ))}
               </TextField>
 
               <TextField
@@ -220,11 +235,13 @@ export default function AddMission({ open, onClose }) {
                 <MenuItem value="" disabled>
                   Sélectionner un collaborateur
                 </MenuItem>
-                {collaborators.map((option) => (
-                  <MenuItem key={option.value} value={option.value}>
-                    {option.label}
-                  </MenuItem>
-                ))}
+                {Dcollaborators
+                  ? Dcollaborators.map((option) => (
+                      <MenuItem key={option.id} value={option.id}>
+                        {`${option.firstName} ${option.lastName}`}
+                      </MenuItem>
+                    ))
+                  : ""}
               </TextField>
             </Box>
 
