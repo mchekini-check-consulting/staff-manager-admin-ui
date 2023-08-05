@@ -19,19 +19,22 @@ import ContentNavbar from "components/ContentNavbar";
 import { format } from "date-fns";
 import fr from "date-fns/locale/fr";
 import { DropzoneArea } from "material-ui-dropzone";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
 import { useAffectFichePaieMutation } from "../../services/fichePaie/fichePaie.api.slice";
 const { info } = colors;
 
 const styles = {
+  root: {
+    background: "red",
+  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     display: "flex",
     mt: 2,
     mb: 4,
-    "& .css-x2am7c-MuiFormControl-root-MuiTextField-root": {
+    "& .MuiTextField-root": {
       width: "45%",
     },
   },
@@ -75,7 +78,6 @@ const styles = {
 function FichePaie() {
   const [date, setDate] = useState();
   const [selectedCollab, setSelectedCollab] = useState();
-  const [collaborators, setCollaborators] = useState([]);
   const [selectedFile, setSelectedFile] = useState();
   const [error, setError] = useState();
   const [success, setSuccess] = useState();
@@ -92,16 +94,12 @@ function FichePaie() {
   const Error = <Typography variant="body2">Erreur !</Typography>;
   const Empty = <Typography variant="body2">Aucun élément n{"\u2019"}est trouvé</Typography>;
 
-  useEffect(() => {
-    if (allCollaborators) setCollaborators(allCollaborators);
-  }, [allCollaborators]);
-
   const renderNames = () => {
     if (loadingCollaborators) return Loading;
     if (collaboratorsError) return Error;
-    if (!collaborators.length) return Empty;
+    if (!allCollaborators.length) return Empty;
 
-    return collaborators?.map((item, idx) => {
+    return allCollaborators?.map((item, idx) => {
       return (
         <MenuItem key={idx} value={item}>
           {item.firstName + " " + item.lastName}
@@ -198,16 +196,26 @@ function FichePaie() {
           disabled={!selectedCollab || !date || !selectedFile}
           onClick={handleSubmit}
         >
-          Valider
+          Uploader
         </Button>
       </Box>
-      <Snackbar open={error} autoHideDuration={4000} onClose={() => setError()}>
-        <Alert severity="error" sx={{ width: "100%" }}>
+      <Snackbar
+        open={error}
+        autoHideDuration={5000}
+        onClose={() => setError()}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert variant="filled" severity="error" sx={{ width: "100%" }}>
           {error}
         </Alert>
       </Snackbar>
-      <Snackbar open={success} autoHideDuration={4000} onClose={() => setSuccess()}>
-        <Alert severity="success" sx={{ width: "100%" }}>
+      <Snackbar
+        open={success}
+        autoHideDuration={5000}
+        onClose={() => setSuccess()}
+        anchorOrigin={{ vertical: "top", horizontal: "right" }}
+      >
+        <Alert variant="filled" severity="success" sx={{ width: "100%" }}>
           {success}
         </Alert>
       </Snackbar>
