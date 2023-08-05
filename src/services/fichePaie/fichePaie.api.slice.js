@@ -3,11 +3,13 @@ import { generalApi } from "../general.api";
 export const fichePaieApi = generalApi.injectEndpoints({
   endpoints: (builder) => ({
     affectFichePaie: builder.mutation({
-      query: (body) => ({
-        url: "paysheet",
-        method: "POST",
-        body,
-      }),
+      query: (body) => {
+        return {
+          url: "paysheet",
+          method: "POST",
+          body,
+        };
+      },
     }),
   }),
 });
