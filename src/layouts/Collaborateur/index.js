@@ -15,14 +15,9 @@ import "react-toastify/dist/ReactToastify.css";
 import EnteteDatagrid from "components/EnteteDatagrid";
 import CustomDataGrid from "components/CustomDataGrid";
 import { CircularProgress, Stack } from "@mui/material";
-
-const collaborateurColumns = [
-  { field: "firstName", headerName: "Prénom", flex: 1 },
-  { field: "lastName", headerName: "Nom", flex: 1 },
-  { field: "email", headerName: "Email", flex: 1 },
-  { field: "phone", headerName: "Téléphone", flex: 1 },
-  { field: "address", headerName: "Adresse", flex: 1 },
-];
+import { IconButton } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import UpdateCollaboratorForm from "./updateCollaborator";
 
 const modalStyle = {
   position: "absolute",
@@ -51,6 +46,7 @@ const formStyle = {
 function Collaborateur() {
   const [createCollaborator, { error, isLoading, isSuccess }] = useCreateCollaboratorMutation();
   const [open, setOpen] = useState(false);
+  const [openUpdateCollab, setOpenUpdateCollab] = useState(false);
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -63,15 +59,49 @@ function Collaborateur() {
   // Utiliser le hook pour récupérer tous les collaborateurs depuis l'API
   const { data, isLoading: getIsLoading, error: getError } = useGetAllCollaboratorsQuery();
 
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+
+  const [collaboratorToUpdate, setCollaboratorToUpdate] = useState(null);
+
+  const handleOpenUpdateCollab = (collaborateur) => {
+    setOpenUpdateCollab(true);
+    setCollaboratorToUpdate(collaborateur);
+  };
+
+  const handleCloseUpdateModal = () => {
+    setOpenUpdateCollab(false);
+    setCollaboratorToUpdate(null);
+  };
+
+  const collaborateurColumns = [
+    { field: "firstName", headerName: "Prénom", flex: 1 },
+    { field: "lastName", headerName: "Nom", flex: 1 },
+    { field: "email", headerName: "Email", flex: 1 },
+    { field: "phone", headerName: "Téléphone", flex: 1 },
+    { field: "address", headerName: "Adresse", flex: 1 },
+    {
+      field: "actions",
+      headerName: " ",
+      flex: 1,
+      renderCell: (params) => {
+        return (
+          <Box sx={{ display: "flex", justifyContent: "space-around", width: "100%" }}>
+            <IconButton onClick={() => handleOpenUpdateCollab(params.row)}>
+              <EditIcon color="action" />
+            </IconButton>
+          </Box>
+        );
+      },
+    },
+  ];
+
   useEffect(() => {
     // Mettre à jour la liste des collaborateurs lorsque les données sont disponibles
     if (data) {
       setCollaborateurs(data);
     }
   }, [data]);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
 
   useEffect(() => {
     if (isSuccess) {
@@ -123,18 +153,9 @@ function Collaborateur() {
       createCollaborator(formData);
     }
   };
-  const buttonStyle = {
-    alignSelf: "flex-start",
-    marginTop: collaborateurs.length > 5 ? "1rem" : "auto",
-    backgroundColor: "#4caf50",
-    color: "#ffffff",
-    "&:hover": {
-      backgroundColor: "#45a049",
-    },
-  };
   const buttonStyle2 = {
     alignSelf: "flex-end",
-    marginTop: collaborateurs.length > 5 ? "1rem" : "auto",
+    marginTop: collaborateurs ? (collaborateurs.length > 5 ? "1rem" : "auto") : "",
     backgroundColor: "#4caf50",
     color: "#ffffff",
     "&:hover": {
@@ -251,6 +272,18 @@ function Collaborateur() {
           </form>
         </Box>
       </Modal>
+
+      {collaboratorToUpdate && (
+        <UpdateCollaboratorForm
+          collaborator={collaboratorToUpdate}
+          style={modalStyle}
+          isOpen={openUpdateCollab}
+          handleClose={handleCloseUpdateModal}
+          setCollaboratorToUpdate={setCollaboratorToUpdate}
+          existingCollaborators={collaborateurs}
+          setCollaborateurs={setCollaborateurs}
+        ></UpdateCollaboratorForm>
+      )}
     </ContentLayout>
   );
 }

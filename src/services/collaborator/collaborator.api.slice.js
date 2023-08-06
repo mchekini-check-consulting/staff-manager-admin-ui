@@ -15,6 +15,13 @@ export const collaboratorApi = generalApi.injectEndpoints({
         body,
       }),
     }),
+    updateCollaborator: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `collaborator/${id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
   }),
 });
 
@@ -22,4 +29,5 @@ export const {
   useGetAllCollaboratorsQuery,
   useGetCollaboratorQuery,
   useCreateCollaboratorMutation,
+  useUpdateCollaboratorMutation,
 } = collaboratorApi;
