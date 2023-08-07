@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sm-admin
+  namespace: staff-manager
+  labels:
+    app: sm-admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sm-admin
+  template:
+    metadata:
+      labels:
+        app: sm-admin
+    spec:
+      serviceAccountName: sm-admin
+      containers:
+        - name: sm-admin
+          imagePullPolicy: Always
+          image: mchekini/staff-manager-admin-ui:develop
+          ports:
+            - containerPort: 80
