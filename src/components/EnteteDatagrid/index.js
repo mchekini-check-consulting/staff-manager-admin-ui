@@ -23,6 +23,7 @@ const EnteteDatagrid = (props) => {
 
       <Button
         variant="contained"
+        disabled={props.ctaButtonDisabled ?? false}
         onClick={(e) => props.ctaButtonOnClick(e)}
         sx={{ color: "#FFFFFF" }}
         endIcon={<AddCircleOutlineOutlinedIcon />}
@@ -37,6 +38,7 @@ EnteteDatagrid.propTypes = {
   enteteText: PropTypes.string.isRequired,
   ctaButtonOnClick: PropTypes.func.isRequired,
   ctaButtonText: PropTypes.string.isRequired,
+  ctaButtonDisabled: PropTypes.bool,
   totalCount: PropTypes.number.isRequired,
 };
 
