@@ -47,10 +47,10 @@ const styles = {
       backgroundColor: info.main,
     },
   },
-  select: {
-    "& .MuiButtonBase-root": {
-      margin: "4px",
-    },
+  item: {
+    display: "block",
+    margin: 4,
+    padding: 4,
   },
   buttonContainer: {
     justifyContent: "center",
@@ -97,11 +97,11 @@ function FichePaie() {
   const renderNames = () => {
     if (loadingCollaborators) return Loading;
     if (collaboratorsError) return Error;
-    if (!allCollaborators.length) return Empty;
+    if (!allCollaborators?.length) return Empty;
 
     return allCollaborators?.map((item, idx) => {
       return (
-        <MenuItem key={idx} value={item}>
+        <MenuItem key={idx} value={item} style={styles.item}>
           {item.firstName + " " + item.lastName}
         </MenuItem>
       );
@@ -145,7 +145,6 @@ function FichePaie() {
           <Select
             labelId="demo-multiple-name-label"
             id="demo-multiple-name"
-            sx={styles.select}
             value={selectedCollab}
             onChange={(e) => {
               setSelectedCollab(e.target.value);
