@@ -5,6 +5,7 @@ import Missions from "layouts/missions";
 import Facture from "layouts/Facture";
 import Justificatif from "layouts/Justificatif";
 import Clients from "layouts/Clients";
+import Society from "layouts/Society";
 
 import Icon from "@mui/material/Icon";
 
@@ -64,6 +65,14 @@ const routes = [
     icon: <Icon fontSize="small">person</Icon>,
     route: "/clients",
     component: <Clients />,
+  },
+  {
+    type: "collapse",
+    name: "Société",
+    key: "society",
+    icon: <Icon fontSize="small">business</Icon>,
+    route: "/societe",
+    component: <Society />,
   },
 ];
 
