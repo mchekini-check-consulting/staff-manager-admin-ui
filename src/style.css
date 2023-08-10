@@ -35,3 +35,15 @@
   justify-content: center;
   align-items: center;
 }
+
+.datepicker-input {
+  border-radius: 5px;
+  border: 2px #0c8af8 solid;
+  padding: 1.3em;
+  background-color: transparent;
+}
+
+.datepicker-input:focus {
+  outline: none;
+  border: 2px #0c8af8 solid;
+}
