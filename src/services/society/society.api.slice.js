@@ -14,6 +14,4 @@ export const societyApi = generalApi.injectEndpoints({
   }),
 });
 
-export const {
-  useCreateSocietyMutation,
-} = societyApi;
+export const { useCreateSocietyMutation } = societyApi;
