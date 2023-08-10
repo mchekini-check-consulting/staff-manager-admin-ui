@@ -1,0 +1,18 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: admin-ingress
+  namespace: staff-manager
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: admin.check-consulting.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sm-admin
+                port:
+                  number: 80
