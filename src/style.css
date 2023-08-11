@@ -41,9 +41,15 @@
   border: 2px #0c8af8 solid;
   padding: 1.3em;
   background-color: transparent;
+  width: 100%;
 }
 
 .datepicker-input:focus {
   outline: none;
   border: 2px #0c8af8 solid;
+}
+.form__invoice {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }

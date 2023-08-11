@@ -9,7 +9,10 @@ const generalSlice = createSlice({
   initialState,
   reducers: {
     tokenPersisted: (state, action) => {
-      return { ...state, tokenPersisted: action.payload };
+      return {
+        ...state,
+        tokenPersisted: action.payload,
+      };
     },
   },
 });
