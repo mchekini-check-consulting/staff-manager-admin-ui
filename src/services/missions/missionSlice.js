@@ -16,7 +16,15 @@ export const missionSlice = generalApi.injectEndpoints({
       }),
       providesTags: ["Missions"],
     }),
+    updateMission: builder.mutation({
+      query: ({ id, ...body }) => ({
+        url: `mission/${id}`,
+        method: "PUT",
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useCreateMissionMutation, useGetMissionsQuery } = missionSlice;
+export const { useCreateMissionMutation, useGetMissionsQuery, useUpdateMissionMutation } =
+  missionSlice;
