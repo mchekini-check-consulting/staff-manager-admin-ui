@@ -6,6 +6,7 @@ export const generalApi = createApi({
   baseQuery: transformedBaseQuery(),
   reducerPath: "general",
   keepUnusedDataFor: 0,
+  refetchOnMountOrArgChange: true,
   endpoints: (builder) => ({
     fetchVersion: builder.query({
       query: () => "/app/details",
