@@ -19,7 +19,7 @@ import ContentLayout from "components/ContentLayout";
 import ContentNavbar from "components/ContentNavbar";
 import CustomDataGrid from "components/CustomDataGrid";
 import Loader from "components/Loader";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import DatePicker from "react-multi-date-picker";
 import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import { useGetAllClientsQuery } from "../../services/clients/client.api.slice";
@@ -107,6 +107,18 @@ function Facture() {
   } = useGetAllCollaboratorsQuery();
 
   const { data: clients, error: clientsError, isLoading: clientsLoading } = useGetAllClientsQuery();
+
+  const fixInvoices = (data) => {
+    return data?.map((item) => {
+      return {
+        id: item.id,
+        name: item.name,
+        customer: item.customer,
+        collabName: item.collaboratorFirstName + " " + item.collaboratorLastName,
+        date: item.date,
+      };
+    });
+  };
 
   useEffect(() => {
     onSearch();
@@ -303,7 +315,7 @@ function Facture() {
         ) : (
           <CustomDataGrid
             columns={columns.map((col) => ({ ...col, width: columnWidth - 5 }))}
-            rows={invoicesData}
+            rows={fixInvoices(invoicesData)}
           />
         )}
       </Box>
