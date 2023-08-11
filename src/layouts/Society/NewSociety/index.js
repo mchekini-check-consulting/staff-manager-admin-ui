@@ -52,7 +52,14 @@ const NewSocietyPopup = () => {
         autoClose: 2000,
       });
     }
-  }, [isSuccess]);
+    if (error) {
+      dispatch(togglePopup());
+      dispatch(resetForm());
+      toast.error(error.message, {
+        autoClose: 2000,
+      });
+    }
+  }, [isSuccess, error]);
 
   function isFormValid(formData) {
     for (const key in formData) {
