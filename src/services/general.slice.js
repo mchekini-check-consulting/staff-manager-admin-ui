@@ -11,7 +11,7 @@ const generalSlice = createSlice({
     tokenPersisted: (state, action) => {
       return {
         ...state,
-        tokenPersisted: action === "application/octet-stream" ? action : action.payload,
+        tokenPersisted: action.payload,
       };
     },
   },
