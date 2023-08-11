@@ -12,15 +12,20 @@ const DocumentActions = ({ params }) => {
   const [isOpen, setIsOpen] = useState(false);
   const DOC_NAME = params.row.name;
 
+  const [fetchEnabled, setFetchEnabled] = useState(false);
+
   const {
     data: getDocCollab,
     error: errorDoc,
     isLoading: isLoadingDoc,
-  } = useGetDocCollabQuery(DOC_NAME);
+  } = useGetDocCollabQuery(DOC_NAME, {
+    enabled: fetchEnabled,
+  });
 
   const DOC_URL = getDocCollab;
 
   const onPreview = () => {
+    setFetchEnabled(true);
     setIsOpen(true);
   };
   const onClose = () => {
@@ -28,6 +33,7 @@ const DocumentActions = ({ params }) => {
   };
 
   const onDownload = () => {
+    setFetchEnabled(true);
     const link = document.createElement("a");
     link.href = getDocCollab;
     link.target = "_blank";
