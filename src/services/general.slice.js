@@ -9,7 +9,11 @@ const generalSlice = createSlice({
   initialState,
   reducers: {
     tokenPersisted: (state, action) => {
-      return { ...state, tokenPersisted: action.payload };
+      console.log("action: ", action);
+      return {
+        ...state,
+        tokenPersisted: action === "application/octet-stream" ? action : action.payload,
+      };
     },
   },
 });

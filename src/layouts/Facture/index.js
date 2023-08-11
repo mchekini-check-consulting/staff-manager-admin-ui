@@ -65,23 +65,24 @@ const styles = {
 
 const columns = [
   {
-    field: "customer",
-    headerName: "Clients",
-    width: 150,
-  },
-  {
     field: "collabName",
     headerName: "Collaborateurs",
     width: 150,
   },
   {
-    field: "date",
-    headerName: "Date",
+    field: "name",
+    headerName: "Nom Facture",
     width: 150,
   },
   {
-    field: "name",
-    headerName: "Nom Facture",
+    field: "customer",
+    headerName: "Clients",
+    width: 150,
+  },
+
+  {
+    field: "date",
+    headerName: "Date",
     width: 150,
   },
 ];
@@ -233,7 +234,7 @@ function Facture() {
     <ContentLayout>
       <ContentNavbar />
       <Box ref={boxRef} sx={styles.header} direction={{ xs: "column", sm: "row" }}>
-        <FormControl sx={{ width: "40%" }}>
+        <FormControl sx={{ width: "25%" }}>
           <InputLabel>Collaborateurs</InputLabel>
           <Select
             labelId="multiple-collabs"
@@ -257,7 +258,7 @@ function Facture() {
           </Select>
         </FormControl>
 
-        <FormControl sx={{ width: "40%" }}>
+        <FormControl sx={{ width: "25%" }}>
           <InputLabel>Clients</InputLabel>
           <Select
             labelId="multiple-clients"
@@ -309,8 +310,8 @@ function Facture() {
             <Loader />
           </Box>
         ) : !invoicesData || invoicesData?.length === 0 ? (
-          <Typography variant="body1" sx={{ color: "red" }}>
-            Aucune facture n{"\u2019"}a été trouvé.
+          <Typography variant="body1" sx={{ color: "black" }}>
+            Aucune facture disponible
           </Typography>
         ) : (
           <CustomDataGrid
