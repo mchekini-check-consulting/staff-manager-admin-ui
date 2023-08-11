@@ -65,7 +65,7 @@ const styles = {
 
 const columns = [
   {
-    field: "customerName",
+    field: "customer",
     headerName: "Clients",
     width: 150,
   },
@@ -80,7 +80,7 @@ const columns = [
     width: 150,
   },
   {
-    field: "invoiceName",
+    field: "name",
     headerName: "Nom Facture",
     width: 150,
   },
@@ -107,6 +107,18 @@ function Facture() {
   } = useGetAllCollaboratorsQuery();
 
   const { data: clients, error: clientsError, isLoading: clientsLoading } = useGetAllClientsQuery();
+
+  const fixInvoices = (data) => {
+    return data?.map((item) => {
+      return {
+        id: item.id,
+        name: item.name,
+        customer: item.customer,
+        collabName: item.collaboratorFirstName + " " + item.collaboratorLastName,
+        date: item.date,
+      };
+    });
+  };
 
   useEffect(() => {
     onSearch();
@@ -303,7 +315,7 @@ function Facture() {
         ) : (
           <CustomDataGrid
             columns={columns.map((col) => ({ ...col, width: columnWidth - 5 }))}
-            rows={invoicesData}
+            rows={fixInvoices(invoicesData)}
           />
         )}
       </Box>
