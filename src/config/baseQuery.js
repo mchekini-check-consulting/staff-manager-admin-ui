@@ -19,7 +19,7 @@ export const transformedBaseQuery = () => async (args, api, extraOptions) => {
 
   return {
     ...response,
-    data: fineStatus && response.data?.payload,
+    data: fineStatus && response.data?.payload ? response.data?.payload : response.data,
     error: !fineStatus && { status: response.error?.status, ...response.error?.data },
   };
 };

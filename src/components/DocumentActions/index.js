@@ -2,7 +2,7 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState } from "react";
-import { useGetDocCollabQuery } from "../../services/justificatifs/justificatif.api.slice";
+import { useLazyGetDocCollabQuery } from "../../services/justificatifs/justificatif.api.slice";
 import FullScreenDialog from "../FullScreenDialog";
 import { Box } from "@mui/material";
 
@@ -12,20 +12,13 @@ const DocumentActions = ({ params }) => {
   const [isOpen, setIsOpen] = useState(false);
   const DOC_NAME = params.row.name;
 
-  const [fetchEnabled, setFetchEnabled] = useState(false);
+  const [getDocs, { data: getDocCollab, error: errorDoc, isLoading: isLoadingDoc }] =
+    useLazyGetDocCollabQuery();
 
-  const {
-    data: getDocCollab,
-    error: errorDoc,
-    isLoading: isLoadingDoc,
-  } = useGetDocCollabQuery(DOC_NAME, {
-    enabled: fetchEnabled,
-  });
-
-  const DOC_URL = getDocCollab;
+  const DOC_URL = getDocCollab && getDocCollab;
 
   const onPreview = () => {
-    setFetchEnabled(true);
+    getDocs(DOC_NAME);
     setIsOpen(true);
   };
   const onClose = () => {
@@ -33,7 +26,7 @@ const DocumentActions = ({ params }) => {
   };
 
   const onDownload = () => {
-    setFetchEnabled(true);
+    getDocs(DOC_NAME);
     const link = document.createElement("a");
     link.href = getDocCollab;
     link.target = "_blank";

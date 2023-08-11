@@ -17,10 +17,9 @@ export const documentApi = generalApi.injectEndpoints({
           const blob = await res.blob();
           return window.URL.createObjectURL(blob);
         },
-        cache: "no-cache",
       }),
     }),
   }),
 });
 
-export const { useSearchDocumentsMutation, useGetDocCollabQuery } = documentApi;
+export const { useSearchDocumentsMutation, useLazyGetDocCollabQuery } = documentApi;
