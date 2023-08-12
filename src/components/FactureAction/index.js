@@ -2,23 +2,23 @@
 import DownloadIcon from "@mui/icons-material/Download";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useState } from "react";
-import { useLazyGetDocCollabQuery } from "../../services/justificatifs/justificatif.api.slice";
+import { useLazyGetInvoiceDocQuery } from "../../services/invoice/invoice.api.slice";
 import FullScreenDialog from "../FullScreenDialog";
 import { Box } from "@mui/material";
 
 const getExtension = (filename) => filename.split(".").pop();
 
-const DocumentActions = ({ params }) => {
+const FactureAction = ({ params }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const DOC_NAME = params.row.name;
+  const INVOICE_NAME = params.row.name;
 
-  const [getDocs, { data: docData, error: errorDoc, isLoading: isLoadingDoc }] =
-    useLazyGetDocCollabQuery();
+  const [getInvoiceDoc, { data: invoiceData, error: errorDoc, isLoading: isLoadingDoc }] =
+    useLazyGetInvoiceDocQuery();
 
-  const DOC_URL = docData && docData;
+  const INVOICE_URL = invoiceData && invoiceData;
 
   const onPreview = () => {
-    getDocs(DOC_NAME);
+    getInvoiceDoc(INVOICE_NAME);
     setIsOpen(true);
   };
   const onClose = () => {
@@ -26,11 +26,11 @@ const DocumentActions = ({ params }) => {
   };
 
   const onDownload = () => {
-    getDocs(DOC_NAME);
+    getInvoiceDoc(INVOICE_NAME);
     const link = document.createElement("a");
-    link.href = DOC_URL;
+    link.href = INVOICE_URL;
     link.target = "_blank";
-    link.download = DOC_NAME;
+    link.download = INVOICE_NAME;
     link.click();
   };
 
@@ -40,16 +40,16 @@ const DocumentActions = ({ params }) => {
         <VisibilityIcon onClick={onPreview} sx={{ cursor: "pointer" }} fontSize="medium" />
         <DownloadIcon onClick={onDownload} sx={{ cursor: "pointer" }} fontSize="medium" />
       </Box>
-      {DOC_URL && (
+      {INVOICE_URL && (
         <FullScreenDialog
           isOpen={isOpen}
           onClose={onClose}
-          file={DOC_URL}
-          ext={getExtension(DOC_NAME)}
+          file={INVOICE_URL}
+          ext={getExtension(INVOICE_NAME)}
         />
       )}
     </>
   );
 };
 
-export default DocumentActions;
+export default FactureAction;

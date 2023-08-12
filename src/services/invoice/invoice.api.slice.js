@@ -9,7 +9,17 @@ export const invoiceApi = generalApi.injectEndpoints({
         body,
       }),
     }),
+    getInvoiceDoc: builder.query({
+      query: (docName) => ({
+        url: `invoice/${docName}`,
+        responseType: "arraybuffer",
+        responseHandler: async (res) => {
+          const blob = await res.blob();
+          return window.URL.createObjectURL(blob);
+        },
+      }),
+    }),
   }),
 });
 
-export const { useSearchInvoicesMutation } = invoiceApi;
+export const { useSearchInvoicesMutation, useLazyGetInvoiceDocQuery } = invoiceApi;

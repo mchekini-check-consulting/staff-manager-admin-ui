@@ -25,6 +25,7 @@ import DatePanel from "react-multi-date-picker/plugins/date_panel";
 import { useGetAllClientsQuery } from "../../services/clients/client.api.slice";
 import { useGetAllCollaboratorsQuery } from "../../services/collaborator/collaborator.api.slice";
 import { useSearchInvoicesMutation } from "../../services/invoice/invoice.api.slice";
+import FactureAction from "../../components/FactureAction";
 
 const styles = {
   header: {
@@ -65,13 +66,13 @@ const styles = {
 
 const columns = [
   {
-    field: "collabName",
-    headerName: "Collaborateurs",
+    field: "name",
+    headerName: "Nom Facture",
     width: 150,
   },
   {
-    field: "name",
-    headerName: "Nom Facture",
+    field: "collabName",
+    headerName: "Collaborateurs",
     width: 150,
   },
   {
@@ -84,6 +85,12 @@ const columns = [
     field: "date",
     headerName: "Date",
     width: 150,
+  },
+  {
+    field: "actions",
+    headerName: " ",
+    width: 180,
+    renderCell: (params) => <FactureAction {...{ params }} />,
   },
 ];
 
