@@ -10,6 +10,15 @@ const initialState = {
     customerPhone: "",
     customerTvaNumber: "",
   },
+  openUpdatePopup: false,
+  updateClientForm: {
+    id: "",
+    customerEmail: "",
+    customerName: "",
+    customerAddress: "",
+    customerPhone: "",
+    customerTvaNumber: "",
+  },
 };
 
 const clientsSlice = createSlice({
@@ -35,8 +44,36 @@ const clientsSlice = createSlice({
         },
       };
     },
+    initData: (state, action) => {
+      return { ...state, updateClientForm: { ...action.payload } };
+    },
+    toggleUpdatePopup: (state) => {
+      return { ...state, openUpdatePopup: !state.openUpdatePopup };
+    },
+    resetUpdateForm: (state) => {
+      return { ...state, updateClientForm: { ...initialState.updateClientForm } };
+    },
+    onChangeClientForm: (state, action) => {
+      const { name, value } = action.payload;
+      return {
+        ...state,
+        updateClientForm: {
+          ...state.updateClientForm,
+          [name]: value,
+        },
+      };
+    },
   },
 });
 
-export const { resetForm, togglePopup, updateForm, toggleSnackbar } = clientsSlice.actions;
+export const {
+  resetForm,
+  togglePopup,
+  updateForm,
+  toggleSnackbar,
+  initData,
+  toggleUpdatePopup,
+  resetUpdateForm,
+  onChangeClientForm,
+} = clientsSlice.actions;
 export default clientsSlice.reducer;
