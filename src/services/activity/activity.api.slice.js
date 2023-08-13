@@ -1,13 +1,17 @@
-import { generalApi } from "../general.api";
+import { generalApi } from "services/general.api";
 
 export const activitySlice = generalApi.injectEndpoints({
   endpoints: (builder) => ({
     getActivities: builder.query({
-      query: () => ({
-        url: "/activity",
+      query: () => "activity",
+    }),
+    validateCra: builder.mutation({
+      query: (id) => ({
+        url: `/activity/validate-cra/${id}`,
+        method: "POST",
       }),
     }),
   }),
 });
 
-export const { useGetActivitiesQuery } = activitySlice;
+export const { useGetActivitiesQuery, useValidateCraMutation } = activitySlice;
