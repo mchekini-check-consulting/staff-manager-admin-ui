@@ -11,7 +11,13 @@ export const societyApi = generalApi.injectEndpoints({
       }),
       invalidatesTags: ["Society"],
     }),
+    getSociety: builder.query({
+      query: () => ({
+        url: "society",
+      }),
+      providesTags: ["Society"],
+    }),
   }),
 });
 
-export const { useCreateSocietyMutation } = societyApi;
+export const { useCreateSocietyMutation, useGetSocietyQuery } = societyApi;
