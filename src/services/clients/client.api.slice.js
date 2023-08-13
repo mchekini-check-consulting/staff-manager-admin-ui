@@ -19,10 +19,10 @@ export const clientsApi = generalApi.injectEndpoints({
       invalidatesTags: ["Clients"],
     }),
     updateClient: builder.mutation({
-      query: ({ clientId, ...client }) => ({
-        url: `customer/${clientId}`,
+      query: ({ id, ...client }) => ({
+        url: `customer/${id}`,
         method: "PUT",
-        body: client,
+        body: { ...client, id },
       }),
       invalidatesTags: ["Clients"],
     }),
