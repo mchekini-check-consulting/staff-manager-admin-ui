@@ -1,7 +1,7 @@
 import Keycloak from "keycloak-js";
 
 const keycloak = new Keycloak({
-  url: "https://keycloak.check-consulting.net/auth/",
+  url: "http://ci.check-consulting.net:10000/auth/",
   realm: "staff-manager-admin",
   clientId: "staff-manager-admin-client",
 });
