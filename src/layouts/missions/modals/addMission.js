@@ -42,6 +42,7 @@ const initialData = {
   customerContactEmail: "",
   customerContactPhone: "",
   missionDescription: "",
+  tauxJournalier: "",
 };
 
 export default function AddMission({ open, onClose }) {
@@ -103,6 +104,7 @@ export default function AddMission({ open, onClose }) {
       "customerContactFirstname",
       "customerContactEmail",
       "customerContactPhone",
+      "tauxJournalier",
     ];
 
     return requiredFields.some((field) => !data[field]);
@@ -243,6 +245,16 @@ export default function AddMission({ open, onClose }) {
                     ))
                   : ""}
               </TextField>
+
+              <TextField
+                variant="outlined"
+                multiline
+                rows={1}
+                label="Taux journalier moyen"
+                value={data.tauxJournalier}
+                onChange={(e) => setData({ ...data, tauxJournalier: e.target.value })}
+                disabled={isLoading}
+              />
             </Box>
 
             <Box sx={blockStyle}>

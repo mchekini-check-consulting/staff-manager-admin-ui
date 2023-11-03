@@ -70,6 +70,11 @@ export default function Missions() {
       flex: 1,
     },
     {
+      field: "tauxJournalier",
+      headerName: "Taux Journalier",
+      flex: 0.8,
+    },
+    {
       field: "actions",
       headerName: " ",
       flex: 1,
