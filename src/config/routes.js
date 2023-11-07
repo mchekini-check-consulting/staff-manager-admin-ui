@@ -6,6 +6,7 @@ import Facture from "layouts/Facture";
 import Justificatif from "layouts/Justificatif";
 import Clients from "layouts/Clients";
 import Society from "layouts/Society";
+import Attestation from "layouts/WorkCertificate";
 
 import Icon from "@mui/material/Icon";
 
@@ -73,6 +74,14 @@ const routes = [
     icon: <Icon fontSize="small">business</Icon>,
     route: "/societe",
     component: <Society />,
+  },
+  {
+    type: "collapse",
+    name: "Attestation de travail",
+    key: "attestation",
+    icon: <Icon fontSize="small">note</Icon>,
+    route: "/attestation",
+    component: <Attestation />,
   },
 ];
 
