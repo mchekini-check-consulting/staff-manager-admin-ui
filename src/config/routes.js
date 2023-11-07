@@ -77,7 +77,7 @@ const routes = [
   },
   {
     type: "collapse",
-    name: "Attestation",
+    name: "Attestation de travail",
     key: "attestation",
     icon: <Icon fontSize="small">note</Icon>,
     route: "/attestation",

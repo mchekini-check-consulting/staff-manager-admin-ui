@@ -35,10 +35,11 @@ function Attestation() {
 
   const styles = {
     header: {
-      flexDirection: "row",
+      flexDirection: "column",
       justifyContent: "space-between",
       display: "flex",
-      mt: 2,
+      padding: 4,
+      mt: 4,
       mb: 4,
     },
   };
@@ -77,8 +78,10 @@ function Attestation() {
   return (
     <ContentLayout>
       <ContentNavbar />
-      <Box sx={styles.header} direction={{ xs: "column", sm: "row" }}>
-        <FormControl sx={{ width: "50%" }}>
+      <Box sx={styles.header}>
+        <FormControl
+          sx={{ width: "60%", marginLeft: "auto", marginRight: "auto", marginBottom: "100px" }}
+        >
           <InputLabel>Collaborateur</InputLabel>
           <Select
             labelId="demo-unique-name-label"
@@ -106,7 +109,12 @@ function Attestation() {
           onClick={handleGenerateAttestaion}
           disabled={isLoading || !selectedCollab}
           variant="contained"
-          sx={{ color: "#FFFFFF", width: "40%" }}
+          sx={{
+            color: "#FFFFFF",
+            width: "40%",
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
         >
           générer
         </Button>
